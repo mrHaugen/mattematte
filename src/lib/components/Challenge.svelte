@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 
 	import Modal from '$lib/components/Modal.svelte';
 	import { goto } from '$app/navigation';
@@ -18,14 +19,20 @@
 	let answerIsCorrect = false;
 	let showResult = false;
 	let showSummary = false;
+	let showStartOverButton: boolean = false;
 
 	export let timer: number = 180;
 
-	setInterval(() => {
+	let countdownTimer = setInterval(() => {
 		if (timer > 0) {
 			timer--;
 		} else {
 			showSummary = true;
+			let showStartOverButtonTimer = setInterval(() => {
+				showStartOverButton = true;
+				clearInterval(showStartOverButtonTimer);
+			}, 1000);
+			clearInterval(countdownTimer);
 		}
 	}, 1000);
 
@@ -66,7 +73,7 @@
 			setTimeout(() => {
 				showResult = false;
 				resultResponseText = '';
-			}, 500);
+			}, 1000);
 		}
 	}
 
@@ -98,7 +105,10 @@
 			You solved {numberOfCorrectAnswers} tasks!
 		</div>
 		<button
-			class="p-4 border-2 rounded-md shadow-xl hover:scale-110 z-10"
+			transition:fade={{ delay: 1500, duration: 300 }}
+			class="{showStartOverButton === false
+				? 'invisible'
+				: ''} p-4 border-2 rounded-md shadow-xl hover:scale-110 z-10"
 			on:click={() => {
 				goto('/');
 			}}>One more time!</button
