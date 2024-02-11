@@ -7,21 +7,21 @@
 
 	import ConfettiOnClick from '$lib/components/ConfettiOnClick.svelte';
 
-	let A: number;
-	let B: number;
+	let A: number | undefined = $state(undefined);
+	let B: number | undefined = $state(undefined);
 	let correctAnswer: number;
 	let trickAnswer1;
 	let trickAnswer2;
-	let alternatives: number[] = [];
+	let alternatives: number[] = $state([]);
 	let numberOfAnswers: number = 0;
-	let numberOfCorrectAnswers: number = 0;
-	let resultResponseText = '';
-	let answerIsCorrect = false;
-	let showResult = false;
-	let showSummary = false;
-	let showStartOverButton: boolean = false;
+	let numberOfCorrectAnswers: number = $state(0);
+	let resultResponseText = $state('');
+	let answerIsCorrect = $state(false);
+	let showResult = $state(false);
+	let showSummary = $state(false);
+	let showStartOverButton: boolean = $state(false);
 
-	export let timer: number = 180;
+	let { timer = 180, selectedMultiplicationTables } = $props();
 
 	let countdownTimer = setInterval(() => {
 		if (timer > 0) {
@@ -37,7 +37,8 @@
 	}, 1000);
 
 	onMount(async () => {
-		A = Math.floor(Math.random() * 8) + 2;
+		const randomIndex: number = Math.floor(Math.random() * selectedMultiplicationTables.length);
+		A = selectedMultiplicationTables[randomIndex];
 		B = Math.floor(Math.random() * 8) + 2;
 		correctAnswer = A * B;
 		trickAnswer1 = A * (B + 1);
@@ -56,7 +57,8 @@
 			showResult = true;
 
 			setTimeout(() => {
-				A = Math.floor(Math.random() * 8) + 2;
+				const randomIndex: number = Math.floor(Math.random() * selectedMultiplicationTables.length);
+				A = selectedMultiplicationTables[randomIndex];
 				B = Math.floor(Math.random() * 8) + 2;
 				correctAnswer = A * B;
 				trickAnswer1 = A * (B + 1);
