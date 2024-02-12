@@ -23,6 +23,11 @@
 
 	let { timer = 180, selectedMultiplicationTables } = $props();
 
+	let multiplicationTables =
+		typeof selectedMultiplicationTables === 'string'
+			? selectedMultiplicationTables.split(',').map(Number)
+			: (selectedMultiplicationTables = selectedMultiplicationTables);
+
 	let countdownTimer = setInterval(() => {
 		if (timer > 0) {
 			timer--;
@@ -37,8 +42,8 @@
 	}, 1000);
 
 	onMount(async () => {
-		const randomIndex: number = Math.floor(Math.random() * selectedMultiplicationTables.length);
-		A = selectedMultiplicationTables[randomIndex];
+		const randomIndex: number = Math.floor(Math.random() * multiplicationTables.length);
+		A = multiplicationTables[randomIndex];
 		B = Math.floor(Math.random() * 8) + 2;
 		correctAnswer = A * B;
 		trickAnswer1 = A * (B + 1);
@@ -57,8 +62,8 @@
 			showResult = true;
 
 			setTimeout(() => {
-				const randomIndex: number = Math.floor(Math.random() * selectedMultiplicationTables.length);
-				A = selectedMultiplicationTables[randomIndex];
+				const randomIndex: number = Math.floor(Math.random() * multiplicationTables.length);
+				A = multiplicationTables[randomIndex];
 				B = Math.floor(Math.random() * 8) + 2;
 				correctAnswer = A * B;
 				trickAnswer1 = A * (B + 1);
