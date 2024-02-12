@@ -22,13 +22,13 @@
 	let showSummary = $state(false);
 	let showStartOverButton: boolean = $state(false);
 
-	let { timer = 180, selectedMultiplicationTables } = $props();
+	let { timer = 180, selectedTables, arithmeticOperation } = $props();
 	let totalTime = $page.params.length;
 
 	let multiplicationTables =
-		typeof selectedMultiplicationTables === 'string'
-			? selectedMultiplicationTables.split(',').map(Number)
-			: (selectedMultiplicationTables = selectedMultiplicationTables);
+		typeof selectedTables === 'string'
+			? selectedTables.split(',').map(Number)
+			: (selectedTables = selectedTables);
 
 	let countdownTimer = setInterval(() => {
 		if (timer > 0) {
@@ -43,14 +43,31 @@
 		}
 	}, 1000);
 
-	onMount(async () => {
+	function createNewTask() {
 		const randomIndex: number = Math.floor(Math.random() * multiplicationTables.length);
 		A = multiplicationTables[randomIndex];
 		B = Math.floor(Math.random() * 8) + 2;
-		correctAnswer = A * B;
-		trickAnswer1 = A * (B + 1);
-		trickAnswer2 = A * (B - 1);
+		// Randomly decide whether to add or subtract
+		const addOrSubtract = Math.random() < 0.5 ? 1 : -1;
+		switch (arithmeticOperation) {
+			case 'multiplication':
+				correctAnswer = A * B;
+				trickAnswer1 = A * (B + addOrSubtract) > 0 ? A * (B + addOrSubtract) : 1;
+				trickAnswer2 = A * (B + 2 * addOrSubtract) > 0 ? A * (B + 2 * addOrSubtract) : 1;
+				break;
+			case 'division':
+				correctAnswer = B;
+				trickAnswer1 = B + addOrSubtract;
+				trickAnswer2 = B + 2 * addOrSubtract;
+				break;
+			default:
+				break;
+		}
 		alternatives = shuffle([correctAnswer, trickAnswer1, trickAnswer2]);
+	}
+
+	onMount(async () => {
+		createNewTask();
 	});
 
 	function sjekkResultat(svar: number) {
@@ -64,13 +81,7 @@
 			showResult = true;
 
 			setTimeout(() => {
-				const randomIndex: number = Math.floor(Math.random() * multiplicationTables.length);
-				A = multiplicationTables[randomIndex];
-				B = Math.floor(Math.random() * 8) + 2;
-				correctAnswer = A * B;
-				trickAnswer1 = A * (B + 1);
-				trickAnswer2 = A * (B - 1);
-				alternatives = shuffle([correctAnswer, trickAnswer1, trickAnswer2]);
+				createNewTask();
 				svar = 0;
 				showResult = false;
 				resultResponseText = '';
@@ -122,7 +133,7 @@
 				? 'invisible'
 				: ''} p-4 border-2 rounded-md shadow-xl hover:scale-110 z-10"
 			on:click={() => {
-				goto('/');
+				goto(`/${$page.params.arithmeticOperation}`);
 			}}>One more time!</button
 		>
 	</div>
@@ -130,7 +141,11 @@
 {:else}
 	<div>
 		<div class="pb-5 text-center text-2xl">
-			{A} · {B}
+			{#if arithmeticOperation === 'multiplication'}
+				{A} · {B}
+			{:else if arithmeticOperation === 'division'}
+				{A * B} : {A}
+			{/if}
 		</div>
 
 		<div class="text-center text-xl">

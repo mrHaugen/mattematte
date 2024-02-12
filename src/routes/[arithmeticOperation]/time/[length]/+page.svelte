@@ -9,12 +9,15 @@
 
 	let challengeIsStarted: boolean = $state(false);
 	let timer: number;
+	const arithmeticOperation = $page.params.arithmeticOperation;
+	const arithmeticOperationCapitilized =
+		arithmeticOperation.charAt(0).toUpperCase() + arithmeticOperation.slice(1);
 
 	function startChallange() {
 		challengeIsStarted = true;
 	}
 
-	const multiplicationTablesArray = [
+	const tablesArray = [
 		{ name: 'one', value: 1 },
 		{ name: 'two', value: 2 },
 		{ name: 'three', value: 3 },
@@ -26,11 +29,21 @@
 		{ name: 'nine', value: 9 }
 	];
 
-	let storedValue = (browser && localStorage.getItem('selectedMultiplicationTables')) || [];
-	let selectedMultiplicationTables = $state(storedValue);
+	let storedValue =
+		(browser && localStorage.getItem(`selected${arithmeticOperationCapitilized}Tables`)) || [];
+	let selectedTables = $state(storedValue);
 
 	$effect(() => {
-		localStorage.selectedMultiplicationTables = selectedMultiplicationTables;
+		switch (arithmeticOperation) {
+			case 'multiplication':
+				localStorage.selectedMultiplicationTables = selectedTables;
+				break;
+			case 'division':
+				localStorage.selectedDivisionTables = selectedTables;
+				break;
+			default:
+				break;
+		}
 	});
 
 	onMount(() => {
@@ -39,27 +52,27 @@
 </script>
 
 {#if challengeIsStarted === true}
-	<Challenge {timer} {selectedMultiplicationTables} />
+	<Challenge {timer} {selectedTables} {arithmeticOperation} />
 {:else}
 	<div>
 		<div class="flex flex-col items-center border-2 rounded-md pt-5 px-5 mb-6">
-			<div class="text-center">Multiplication table(s)<br /> to practice</div>
+			<div class="text-center">{arithmeticOperationCapitilized} table(s)<br /> to practice</div>
 			<div class="py-8 space-y-4">
-				{#each multiplicationTablesArray as multiplication}
+				{#each tablesArray as table}
 					<div class="relative flex items-start">
 						<div class="mr-3 text-sm leading-6">
-							<label for={multiplication.name} class="font-medium text-gray-900"
-								>{multiplication.value}</label
+							<label for={table.name} class="font-medium text-gray-900"
+								>{table.value}</label
 							>
 						</div>
 						<div class="flex h-6 items-center">
 							<!-- <label for="hs-basic-usage" class="sr-only">switch</label> -->
 							<input
-								bind:group={selectedMultiplicationTables}
-								value={multiplication.value}
-								id={multiplication.name}
-								aria-describedby="the ${multiplication.name} times table"
-								name={multiplication.name}
+								bind:group={selectedTables}
+								value={table.value}
+								id={table.name}
+								aria-describedby="the ${table.name} times table"
+								name={table.name}
 								type="checkbox"
 								class="
 								relative w-11 h-6 p-px bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600
@@ -74,7 +87,7 @@
 
 		<button
 			class="bg-green-300 py-3 px-2 border-2 w-64 rounded-md text-xl hover:scale-110 transition duration-150 ease-in-out disabled:hover:scale-100 disabled:bg-gray-50 disabled:text-gray-300"
-			disabled={selectedMultiplicationTables.length === 0}
+			disabled={selectedTables.length === 0}
 			on:click={() => startChallange()}>Start</button
 		>
 	</div>
