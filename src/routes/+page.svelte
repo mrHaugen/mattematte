@@ -7,7 +7,7 @@
 	{#each arithmeticOperations as operation}
 		<a
 			class="p-4 border-2 bg-green-300 text-green-950 rounded-md capitalize hover:bg-green-400"
-			href="/{operation}">{operation}</a
+			href="./{operation}">{operation}</a
 		>
 	{/each}
 </div>
