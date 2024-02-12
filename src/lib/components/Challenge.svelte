@@ -109,11 +109,11 @@
 
 {#if showSummary}
 	<div class="flex flex-col items-center justify-center space-y-5">
-		<div>Congratulations!</div>
-		<div>
+		<div class="text-center">Congratulations!</div>
+		<div class="text-center">
 			You solved {numberOfCorrectAnswers} tasks!
 		</div>
-		<div>
+		<div class="text-center">
 			That's an astonishing {Math.round(numberOfCorrectAnswers / totalTime)} correct answers per minute!
 		</div>
 		<button
