@@ -23,7 +23,7 @@
 	}
 </script>
 
-<div class="fixed top-0 h-full w-full" on:click={moveConfetti} aria-hidden="true">
+<div class="fixed top-0 h-full w-full" on:mousedown={moveConfetti} aria-hidden="true">
 	{#each things as thing}
 		<div class="absolute" style="left: {thing.x}px; top: {thing.y}px">
 			<Confetti y={[-2, 2]} x={[-2, 2]} fallDistance="50px" amount={70} {duration} />
