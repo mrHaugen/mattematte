@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import { page } from '$app/stores';
 
 	import Modal from '$lib/components/Modal.svelte';
 	import { goto } from '$app/navigation';
@@ -22,6 +23,7 @@
 	let showStartOverButton: boolean = $state(false);
 
 	let { timer = 180, selectedMultiplicationTables } = $props();
+	let totalTime = $page.params.length;
 
 	let multiplicationTables =
 		typeof selectedMultiplicationTables === 'string'
@@ -110,6 +112,9 @@
 		<div>Congratulations!</div>
 		<div>
 			You solved {numberOfCorrectAnswers} tasks!
+		</div>
+		<div>
+			That's an astonishing {Math.round(numberOfCorrectAnswers / totalTime)} correct answers per minute!
 		</div>
 		<button
 			transition:fade={{ delay: 1500, duration: 300 }}
