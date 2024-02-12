@@ -8,7 +8,7 @@
 
 <div class="p-2">
 	<div class="pt-7 pb-10 border-2 w-64 align-center justify-center items-center space-y-3">
-		<h2 class="text-xl text-center font-bold">Challange</h2>
+		<h2 class="text-xl text-center font-bold">Challenge</h2>
 		<div class="flex flex-col space-y-2 items-center">
 			<button
 				on:click={() => selectChallenge(0.5)}
