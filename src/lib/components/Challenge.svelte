@@ -135,19 +135,19 @@
 
 		<div class="text-center text-xl">
 			<button
-				class="p-4 border-2 rounded-md w-16 hover:scale-110 transition duration-150 ease-in-out"
+				class="p-4 border-2 rounded-md w-16 md:hover:scale-110 transition duration-150 ease-in-out"
 				value={alternatives[0]}
 				on:click={() => sjekkResultat(alternatives[0])}>{alternatives[0]}</button
 			>
 
 			<button
-				class="p-4 border-2 rounded-md w-16 hover:scale-110 transition duration-150 ease-in-out"
+				class="p-4 border-2 rounded-md w-16 md:hover:scale-110 transition duration-150 ease-in-out"
 				value={alternatives[1]}
 				on:click={() => sjekkResultat(alternatives[1])}>{alternatives[1]}</button
 			>
 
 			<button
-				class="p-4 border-2 rounded-md w-16 hover:scale-110 transition duration-150 ease-in-out"
+				class="p-4 border-2 rounded-md w-16 md:hover:scale-110 transition duration-150 ease-in-out"
 				value={alternatives[2]}
 				on:click={() => sjekkResultat(alternatives[2])}>{alternatives[2]}</button
 			>
