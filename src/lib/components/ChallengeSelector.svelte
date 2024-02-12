@@ -16,6 +16,11 @@
 				>30 s</button
 			>
 			<button
+				on:click={() => selectChallenge(1)}
+				class="p-2 border-2 rounded-md w-3/4 hover:scale-110 transition duration-150 ease-in-out"
+				>1 min</button
+			>
+			<button
 				on:click={() => selectChallenge(2)}
 				class="p-2 border-2 rounded-md w-3/4 hover:scale-110 transition duration-150 ease-in-out"
 				>2 min</button
