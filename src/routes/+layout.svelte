@@ -9,7 +9,7 @@
 
 <div class="p-2">
 	{#if $page.params.arithmeticOperation}
-		<a class="flex flex-row space-x-2 text-gray-500" href="../"
+		<a class="flex flex-row space-x-2 text-gray-500" href=".."
 			><svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
