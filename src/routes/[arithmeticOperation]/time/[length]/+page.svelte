@@ -2,10 +2,9 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
-	//import type { PageData } from './$types';
-	//export let data: PageData;
 
 	import Challenge from '$lib/components/Challenge.svelte';
+	import BackButton from '$lib/components/BackButton.svelte';
 
 	let challengeIsStarted: boolean = $state(false);
 	let timer: number;
@@ -51,6 +50,8 @@
 	});
 </script>
 
+<BackButton url={`/${arithmeticOperation}`} />
+
 {#if challengeIsStarted === true}
 	<Challenge {timer} {selectedTables} {arithmeticOperation} />
 {:else}
@@ -61,9 +62,7 @@
 				{#each tablesArray as table}
 					<div class="relative flex items-start">
 						<div class="mr-3 text-sm leading-6">
-							<label for={table.name} class="font-medium text-gray-900"
-								>{table.value}</label
-							>
+							<label for={table.name} class="font-medium text-gray-900">{table.value}</label>
 						</div>
 						<div class="flex h-6 items-center">
 							<!-- <label for="hs-basic-usage" class="sr-only">switch</label> -->
