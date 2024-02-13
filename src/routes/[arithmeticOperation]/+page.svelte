@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	export let data: PageData;
+	import { page } from '$app/stores';
 
 	const times = [0.5, 1, 2, 5, 10, 20];
 </script>
@@ -11,7 +12,7 @@
 		<div class="flex flex-col space-y-2 items-center">
 			{#each times as time}
 				<a
-					href="./time/{time}"
+					href="/{$page.params.arithmeticOperation}/time/{time}"
 					class="p-2 border-2 rounded-md w-3/4 hover:scale-110 transition duration-150 ease-in-out"
 					>{time === 0.5 ? '30 s' : time + ' minutes'}</a
 				>
