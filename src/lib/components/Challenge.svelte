@@ -167,7 +167,7 @@
 				on:click={() => sjekkResultat(alternatives[2])}>{alternatives[2]}</button
 			>
 		</div>
-		<div class="fixed top-5">
+		<div class="fixed top-4 right-20 mx-auto">
 			<div class="text-md text-gray-600">
 				{Math.floor(timer / 60)}:{Math.floor(timer - Math.floor(timer / 60) * 60)}
 			</div>
