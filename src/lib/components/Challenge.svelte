@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
 
@@ -17,7 +17,7 @@
 	let numberOfAnswers: number = 0;
 	let numberOfCorrectAnswers: number = $state(0);
 	let resultResponseText = $state('');
-	let answerIsCorrect = $state(false);
+	let answerIsCorrect: boolean | undefined = $state(undefined);
 	let showResult = $state(false);
 	let showSummary = $state(false);
 	let showStartOverButton: boolean = $state(false);
@@ -119,7 +119,7 @@
 </script>
 
 {#if showSummary}
-	<div class="flex flex-col items-center justify-center space-y-5">
+	<div class="flex flex-col items-center justify-center space-y-5" aria-live="assertive" role="presentation">
 		<div class="text-center">Congratulations!</div>
 		<div class="text-center">
 			You solved {numberOfCorrectAnswers} tasks!
@@ -128,6 +128,7 @@
 			That's an astonishing {Math.round(numberOfCorrectAnswers / totalTime)} correct answers per minute!
 		</div>
 		<button
+			aria-hidden="true"
 			transition:fade={{ delay: 1500, duration: 300 }}
 			class="{showStartOverButton === false
 				? 'invisible'
@@ -136,16 +137,31 @@
 				goto(`/${$page.params.arithmeticOperation}`);
 			}}>One more time!</button
 		>
+		<button
+			class="sr-only"
+			on:click={() => {
+				goto(`/${$page.params.arithmeticOperation}`);
+			}}>One more time!</button
+		>
 	</div>
 	<ConfettiOnClick />
 {:else}
 	<div>
-		<div class="pb-5 text-center text-2xl" translate="no">
-			{#if arithmeticOperation === 'multiplication'}
-				{A} · {B}
-			{:else if arithmeticOperation === 'division'}
-				{A * B} : {A}
-			{/if}
+		<div class="pb-5 text-center text-2xl" translate="no" aria-live="assertive" role="presentation">
+			<div class="fixed top-0 sr-only">
+				{#if answerIsCorrect === true}
+					correct
+				{:else if answerIsCorrect === false}
+					wrong
+				{/if}
+			</div>
+			<div>
+				{#if arithmeticOperation === 'multiplication'}
+					{A} · {B}
+				{:else if arithmeticOperation === 'division'}
+					{A * B} : {A}
+				{/if}
+			</div>
 		</div>
 
 		<div class="text-center text-xl" translate="no">
@@ -167,7 +183,7 @@
 				on:click={() => sjekkResultat(alternatives[2])}>{alternatives[2]}</button
 			>
 		</div>
-		<div class="fixed top-4 right-20 mx-auto">
+		<div class="fixed top-4 right-20 mx-auto" aria-hidden="true">
 			<div class="text-md text-gray-600">
 				{Math.floor(timer / 60)}:{Math.floor(timer - Math.floor(timer / 60) * 60)}
 			</div>

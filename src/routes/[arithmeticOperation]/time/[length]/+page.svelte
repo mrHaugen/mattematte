@@ -57,7 +57,7 @@
 {:else}
 	<div>
 		<div class="flex flex-col items-center border-2 rounded-md pt-5 px-5 mb-6">
-			<div class="text-center">{arithmeticOperationCapitilized} table(s)<br /> to practice</div>
+			<h1 class="text-center" aria-label="Use checkboxes below to select tables to practise. Start excercise with start-button at bottom.">{arithmeticOperationCapitilized} table(s) to practice</h1>
 			<div class="py-8 space-y-4">
 				{#each tablesArray as table}
 					<div class="relative flex items-start">
@@ -85,7 +85,7 @@
 		</div>
 
 		<button
-			class="bg-green-300 py-3 px-2 border-2 w-64 rounded-md text-xl hover:scale-110 transition duration-150 ease-in-out disabled:hover:scale-100 disabled:bg-gray-50 disabled:text-gray-300"
+			class="bg-green-300 py-3 px-2 border-2 w-full rounded-md text-xl hover:scale-110 transition duration-150 ease-in-out disabled:hover:scale-100 disabled:bg-gray-50 disabled:text-gray-300"
 			disabled={selectedTables.length === 0}
 			on:click={() => startChallange()}>Start</button
 		>
