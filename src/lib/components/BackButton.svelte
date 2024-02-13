@@ -2,7 +2,7 @@
 	let { url } = $props();
 </script>
 
-<div class="absolute top-2 left-2 p-2">
+<div class="absolute top-2 left-2 p-2 z-10">
 	<a class="flex flex-row space-x-2 text-gray-500" href={url}
 		><svg
 			xmlns="http://www.w3.org/2000/svg"
