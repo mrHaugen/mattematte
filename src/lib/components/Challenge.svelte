@@ -140,7 +140,7 @@
 	<ConfettiOnClick />
 {:else}
 	<div>
-		<div class="pb-5 text-center text-2xl">
+		<div class="pb-5 text-center text-2xl" translate="no">
 			{#if arithmeticOperation === 'multiplication'}
 				{A} · {B}
 			{:else if arithmeticOperation === 'division'}
@@ -148,7 +148,7 @@
 			{/if}
 		</div>
 
-		<div class="text-center text-xl">
+		<div class="text-center text-xl" translate="no">
 			<button
 				class="p-4 border-2 rounded-md w-16 md:hover:scale-110 transition duration-150 ease-in-out"
 				value={alternatives[0]}
