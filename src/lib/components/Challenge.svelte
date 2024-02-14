@@ -25,6 +25,34 @@
 	let { timer = 180, selectedTables, arithmeticOperation } = $props();
 	let totalTime = $page.params.length;
 
+	const encouragingFeedback = [
+		'Fantastic job! 👏',
+		'Well done, superstar! 🌟',
+		'Awesome work! 🎉',
+		"You're amazing! 🌈",
+		'Bravo! 👍',
+		'Incredible effort! 💪',
+		'Superb! 🎈',
+		'Way to go! 🚀',
+		'Outstanding! 🎊',
+		'Terrific! 🌻',
+		'Keep up the great work! 🌟',
+		'You nailed it! 🔥',
+		'Excellent job! 👌',
+		"You're a rockstar! 🎸",
+		'Outstanding performance! 🏆',
+		'Bravo, buddy! 👏',
+		'Remarkable effort! 💯',
+		"You're on fire! 🔥",
+		'Spectacular work! 🌟',
+		"You're a star! ⭐️",
+		'Fabulous job! 💫',
+		'Impressive! 😎',
+		'You make it look easy! 😊',
+		"You're a champion! 🏅",
+		'Outstanding achievement! 🎖️'
+	];
+
 	let multiplicationTables =
 		typeof selectedTables === 'string'
 			? selectedTables.split(',').map(Number)
@@ -124,7 +152,9 @@
 		aria-live="assertive"
 		role="presentation"
 	>
-		<div class="text-center">Congratulations!</div>
+		<div class="text-center text-xl font-medium">
+			{encouragingFeedback[Math.floor(Math.random() * encouragingFeedback.length)]}
+		</div>
 		<div class="text-center">
 			You solved {numberOfCorrectAnswers} tasks!
 		</div>
