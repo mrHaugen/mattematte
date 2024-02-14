@@ -26,31 +26,31 @@
 	let totalTime = $page.params.length;
 
 	const encouragingFeedback = [
-		'Fantastic job! 👏',
-		'Well done, superstar! 🌟',
-		'Awesome work! 🎉',
-		"You're amazing! 🌈",
+		'Fantastisk jobb! 👏',
+		'Godt jobbet, superstjerne! 🌟',
+		'Kjempebra jobbet! 🎉',
+		'Du er fantastisk! 🌈',
 		'Bravo! 👍',
-		'Incredible effort! 💪',
+		'Utrolig innsats! 💪',
 		'Superb! 🎈',
-		'Way to go! 🚀',
-		'Outstanding! 🎊',
-		'Terrific! 🌻',
-		'Keep up the great work! 🌟',
-		'You nailed it! 🔥',
-		'Excellent job! 👌',
-		"You're a rockstar! 🎸",
-		'Outstanding performance! 🏆',
-		'Bravo, buddy! 👏',
-		'Remarkable effort! 💯',
-		"You're on fire! 🔥",
-		'Spectacular work! 🌟',
-		"You're a star! ⭐️",
-		'Fabulous job! 💫',
-		'Impressive! 😎',
-		'You make it look easy! 😊',
-		"You're a champion! 🏅",
-		'Outstanding achievement! 🎖️'
+		'Bra gjort! 🚀',
+		'Utmerket! 🎊',
+		'Fantastisk! 🌻',
+		'Fortsett det gode arbeidet! 🌟',
+		'Du klarte det! 🔥',
+		'Utmerket jobb! 👌',
+		'Du er en rockestjerne! 🎸',
+		'Utmerket prestasjon! 🏆',
+		'Bra gjort, kompis! 👏',
+		'Bemerkelsesverdig innsats! 💯',
+		'Du er rå! 🔥',
+		'Spektakulært arbeid! 🌟',
+		'Du er en stjerne! ⭐️',
+		'Fantastisk jobb! 💫',
+		'Imponerende! 😎',
+		'Du gjør at det ser lett ut! 😊',
+		'Du er en mester! 🏅',
+		'Topp innsats! 🎖️'
 	];
 
 	let multiplicationTables =
@@ -104,7 +104,7 @@
 		if (correctAnswer == svar) {
 			numberOfCorrectAnswers++;
 
-			resultResponseText = 'Congrats, you are doing great!';
+			resultResponseText = 'Supert, du er flink!';
 			answerIsCorrect = true;
 			showResult = true;
 
@@ -115,7 +115,7 @@
 				resultResponseText = '';
 			}, 500);
 		} else {
-			resultResponseText = 'Try again :)';
+			resultResponseText = 'Prøv igjen 👍';
 			answerIsCorrect = false;
 			showResult = true;
 			setTimeout(() => {
@@ -156,10 +156,10 @@
 			{encouragingFeedback[Math.floor(Math.random() * encouragingFeedback.length)]}
 		</div>
 		<div class="text-center">
-			You solved {numberOfCorrectAnswers} tasks!
+			Du løste {numberOfCorrectAnswers} oppgaver!
 		</div>
 		<div class="text-center">
-			That's an astonishing {Math.round(numberOfCorrectAnswers / totalTime)} correct answers per minute!
+			Det er {Math.round(numberOfCorrectAnswers / totalTime)} riktige svar i minuttet!
 		</div>
 		<button
 			aria-hidden="true"
@@ -169,16 +169,16 @@
 				: ''} p-4 border-2 rounded-md shadow-xl hover:scale-110 z-10"
 			on:click={() => {
 				goto(`/${$page.params.arithmeticOperation}`);
-			}}>One more time!</button
+			}}>En gang til!</button
 		>
 		<button
 			class="sr-only"
 			on:click={() => {
 				goto(`/${$page.params.arithmeticOperation}`);
-			}}>One more time!</button
+			}}>En gang til!</button
 		>
 		<div class="pt-10 text-center text-sm text-gray-500" aria-hidden="true">
-			Pro tip: click anywhere to throw confetti 🥳
+			Pro tips: Trykk for å kaste konfetti 🥳
 		</div>
 	</div>
 	<ConfettiOnClick />
@@ -187,9 +187,9 @@
 		<div class="pb-5 text-center text-2xl" translate="no" aria-live="assertive" role="presentation">
 			<div class="fixed top-0 sr-only">
 				{#if answerIsCorrect === true}
-					correct
+					riktig
 				{:else if answerIsCorrect === false}
-					wrong
+					feil
 				{/if}
 			</div>
 			<div>

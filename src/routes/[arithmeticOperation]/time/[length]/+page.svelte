@@ -57,7 +57,12 @@
 {:else}
 	<div>
 		<div class="flex flex-col items-center border-2 rounded-md pt-5 px-5 mb-6">
-			<h1 class="text-center" aria-label="Use checkboxes below to select tables to practise. Start excercise with start-button at bottom.">{arithmeticOperationCapitilized} table(s) to practice</h1>
+			<h1
+				class="text-center"
+				aria-label="Use checkboxes below to select tables to practise. Start excercise with start-button at bottom."
+			>
+				Velg tabeller å øve på
+			</h1>
 			<div class="py-8 space-y-4">
 				{#each tablesArray as table}
 					<div class="relative flex items-start">
