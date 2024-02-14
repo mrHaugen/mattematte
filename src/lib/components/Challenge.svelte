@@ -203,7 +203,7 @@
 		<div class="text-center text-xl space-x-3" translate="no">
 			{#each alternatives as alternative}
 				<button
-					class="p-4 border-2 rounded-md w-16 md:hover:scale-110 transition duration-150 ease-in-out"
+					class="p-4 border-2 rounded-md w-16"
 					value={alternative}
 					on:click={() => sjekkResultat(alternative)}>{alternative}</button
 				>
