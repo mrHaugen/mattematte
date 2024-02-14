@@ -119,7 +119,11 @@
 </script>
 
 {#if showSummary}
-	<div class="flex flex-col items-center justify-center space-y-5" aria-live="assertive" role="presentation">
+	<div
+		class="flex flex-col items-center justify-center space-y-5"
+		aria-live="assertive"
+		role="presentation"
+	>
 		<div class="text-center">Congratulations!</div>
 		<div class="text-center">
 			You solved {numberOfCorrectAnswers} tasks!
@@ -129,7 +133,7 @@
 		</div>
 		<button
 			aria-hidden="true"
-			transition:fade={{ delay: 1500, duration: 300 }}
+			transition:fade={{ delay: 2500, duration: 300 }}
 			class="{showStartOverButton === false
 				? 'invisible'
 				: ''} p-4 border-2 rounded-md shadow-xl hover:scale-110 z-10"
@@ -143,6 +147,9 @@
 				goto(`/${$page.params.arithmeticOperation}`);
 			}}>One more time!</button
 		>
+		<div class="pt-10 text-center text-sm text-gray-500" aria-hidden="true">
+			Pro tip: click anywhere to throw confetti 🥳
+		</div>
 	</div>
 	<ConfettiOnClick />
 {:else}
