@@ -7,7 +7,7 @@
 
 <div class="flex flex-col text-center space-y-3">
 	<h1 class="text-lg" aria-label="Use links below to select arithmetic operations">
-		Velg hva du vil øve på
+		Hva vil du øve på?
 	</h1>
 	{#each arithmeticOperations as operation}
 		<a
