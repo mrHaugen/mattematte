@@ -8,18 +8,14 @@
 
 	import ConfettiOnClick from '$lib/components/ConfettiOnClick.svelte';
 
-	let A: number | undefined = $state(undefined);
-	let B: number | undefined = $state(undefined);
-	let correctAnswer: number;
-	let trickAnswer1;
-	let trickAnswer2;
-	let alternatives: number[] = $state([]);
-	let numberOfAnswers: number = 0;
-	let numberOfCorrectAnswers: number = $state(0);
+	import { Questions } from './utils';
+
 	let resultResponseText = $state('');
 	let answerIsCorrect: boolean | undefined = $state(undefined);
 	let showResult = $state(false);
 	let showSummary = $state(false);
+	let numberOfCorrectAnswers = $state(0);
+
 	let showStartOverButton: boolean = $state(false);
 
 	let { timer = 180, selectedTables, arithmeticOperation } = $props();
@@ -71,79 +67,41 @@
 		}
 	}, 1000);
 
-	function createNewTask() {
-		const randomIndex: number = Math.floor(Math.random() * multiplicationTables.length);
-		A = multiplicationTables[randomIndex];
-		B = Math.floor(Math.random() * 8) + 2;
-		// Randomly decide whether to add or subtract
-		const addOrSubtract = Math.random() < 0.5 ? 1 : -1;
-		switch (arithmeticOperation) {
-			case 'multiplication':
-				correctAnswer = A * B;
-				trickAnswer1 = A * (B + addOrSubtract) > 0 ? A * (B + addOrSubtract) : 1;
-				trickAnswer2 = A * (B + 2 * addOrSubtract) > 0 ? A * (B + 2 * addOrSubtract) : 1;
-				break;
-			case 'division':
-				correctAnswer = B;
-				trickAnswer1 = B + addOrSubtract;
-				trickAnswer2 = B + 2 * addOrSubtract;
-				break;
-			default:
-				break;
-		}
-		alternatives = shuffle([correctAnswer, trickAnswer1, trickAnswer2]);
+	const multiplicationTable = new Questions(arithmeticOperation);
+
+	let task = $state(undefined);
+	let taskStartTime: number;
+
+	function getNewTask() {
+		task = multiplicationTable.getRandomTask(multiplicationTables);
+		taskStartTime = Date.now();
 	}
 
-	onMount(async () => {
-		createNewTask();
-	});
+	async function checkAnswer(answer) {
+		const thinkTime = Date.now() - taskStartTime;
+		answerIsCorrect = multiplicationTable.checkAnswer(task, answer, thinkTime);
+		resultResponseText = answerIsCorrect ? 'Supert, du er flink!' : 'Prøv igjen 👍';
 
-	function sjekkResultat(svar: number) {
-		numberOfAnswers++;
+		showResult = true;
 
-		if (correctAnswer == svar) {
+		// Show result for a short time
+		await new Promise((resolve) => {
+			setTimeout(() => {
+				showResult = false;
+				resultResponseText = '';
+				resolve(); // Resolve the promise after setting showResult to false
+			}, 400);
+		});
+
+		if (answerIsCorrect) {
 			numberOfCorrectAnswers++;
-
-			resultResponseText = 'Supert, du er flink!';
-			answerIsCorrect = true;
-			showResult = true;
-
-			setTimeout(() => {
-				createNewTask();
-				svar = 0;
-				showResult = false;
-				resultResponseText = '';
-			}, 500);
-		} else {
-			resultResponseText = 'Prøv igjen 👍';
-			answerIsCorrect = false;
-			showResult = true;
-			setTimeout(() => {
-				showResult = false;
-				resultResponseText = '';
-			}, 1000);
+			getNewTask();
 		}
 	}
 
-	function shuffle(array: number[]) {
-		var currentIndex = array.length,
-			temporaryValue,
-			randomIndex;
-
-		// While there remain elements to shuffle...
-		while (0 !== currentIndex) {
-			// Pick a remaining element...
-			randomIndex = Math.floor(Math.random() * currentIndex);
-			currentIndex -= 1;
-
-			// And swap it with the current element.
-			temporaryValue = array[currentIndex];
-			array[currentIndex] = array[randomIndex];
-			array[randomIndex] = temporaryValue;
-		}
-
-		return array;
-	}
+	onMount(() => {
+		getNewTask();
+	});
 </script>
 
 {#if showSummary}
@@ -193,21 +151,25 @@
 				{/if}
 			</div>
 			<div>
-				{#if arithmeticOperation === 'multiplication'}
-					{A} · {B}
-				{:else if arithmeticOperation === 'division'}
-					{A * B} : {A}
+				{#if task}
+					{task.question.A}
+					{#if arithmeticOperation === 'multiplication'}
+						·
+					{:else if arithmeticOperation === 'division'}
+						:
+					{/if}
+					{task.question.B}
 				{/if}
 			</div>
 		</div>
 		<div class="text-center text-xl space-x-3" translate="no">
-			{#each alternatives as alternative}
-				<button
-					class="p-4 border-2 rounded-md w-16"
-					value={alternative}
-					on:click={() => sjekkResultat(alternative)}>{alternative}</button
-				>
-			{/each}
+			{#if task}
+				{#each task.alternatives as alternative, index}
+					<button class="p-4 border-2 rounded-md w-16 h-16" onclick={() => checkAnswer(alternative)}
+						>{alternative}</button
+					>
+				{/each}
+			{/if}
 		</div>
 		<div class="fixed top-4 right-20 mx-auto" aria-hidden="true">
 			<div class="text-md text-gray-600">

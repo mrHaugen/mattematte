@@ -4,8 +4,8 @@
 
 	let selectedTables = [2, 3, 4, 5, 6, 7, 8, 9];
 
-	let operation = 'multiplication';
-	const multiplicationTable = new Questions(operation);
+	let arithmeticOperation = 'multiplication';
+	const multiplicationTable = new Questions(arithmeticOperation);
 
 	let task = $state(undefined);
 	let taskStartTime: number;
@@ -33,9 +33,9 @@
 	{#if task}
 		<div>
 			{task.question.A}
-			{#if operation === 'multiplication'}
+			{#if arithmeticOperation === 'multiplication'}
 				·
-			{:else if operation === 'division'}
+			{:else if arithmeticOperation === 'division'}
 				:
 			{/if}
 			{task.question.B}
