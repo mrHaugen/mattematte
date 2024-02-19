@@ -1,5 +1,9 @@
 class Questions {
-	constructor(operation = 'multiplication') {
+	constructor(
+		operation = 'multiplication',
+		sensitivity = { thinkTime: 1, correctAnswers: 1, incorrectAnswers: 1 }
+	) {
+		this.sensitivity = sensitivity;
 		this.operation = operation; // Store the operation value for use in updateObject()
 
 		if (import.meta.env.SSR) {
@@ -113,14 +117,20 @@ class Questions {
 			selectedTables.includes(question.table)
 		);
 
-		// Calculate total thinkTime for selected questions
-		const totalThinkTime = filteredQuestions.reduce(
-			(total, question) => total + question.thinkTime,
-			0
-		);
+		// Calculate composite score for each question
+		const compositeScores = filteredQuestions.map((question) => {
+			const compositeScore =
+				this.sensitivity.thinkTime * question.thinkTime +
+				this.sensitivity.correctAnswers * question.correct +
+				this.sensitivity.incorrectAnswers * question.incorrect;
+			return compositeScore;
+		});
 
-		// Calculate probabilities based on thinkTime
-		const probabilities = filteredQuestions.map((question) => question.thinkTime / totalThinkTime);
+		// Calculate total composite score
+		const totalCompositeScore = compositeScores.reduce((total, score) => total + score, 0);
+
+		// Calculate probabilities based on composite scores
+		const probabilities = compositeScores.map((score) => score / totalCompositeScore);
 
 		// Generate a random number between 0 and 1
 		const random = Math.random();
@@ -134,8 +144,8 @@ class Questions {
 			}
 		}
 
-		// If no question is selected, return null
-		return null;
+		// If no question is selected, return the first question
+		return filteredQuestions[0];
 	}
 
 	generateAlternatives(A, B, correctAnswer) {
