@@ -136,7 +136,9 @@
 			}}>En gang til!</button
 		>
 		<div class="pt-10 text-center text-sm text-gray-500" aria-hidden="true">
-			Pro tips: Trykk for å kaste konfetti 🥳
+			{Math.random() > 0.2
+				? 'Pro tips: Trykk for å kaste konfetti 🥳'
+				: 'Pro tips: Velg 2 minutter challenge og øv mens du pusser tenner 🪥 🦷'}
 		</div>
 	</div>
 	<ConfettiOnClick />
