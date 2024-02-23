@@ -17,3 +17,7 @@
 		>
 	{/each}
 </div>
+
+<div class="fixed bottom-0 py-5 text-gray-500 text-sm">
+	<span>Spørsmål? Kontakt oss på</span> <a class="hover:underline" href="mailto:post@1618.no">post@1618.no</a>
+</div>
