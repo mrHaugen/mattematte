@@ -7,6 +7,6 @@
 	<title>mattematte.no</title>
 </svelte:head>
 
-<div class="flex h-screen items-center justify-center px-2">
+<div class="flex flex-col h-screen items-center justify-center px-2">
 	<slot />
 </div>

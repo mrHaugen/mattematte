@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
+	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
 
@@ -7,6 +7,7 @@
 	import { goto } from '$app/navigation';
 
 	import ConfettiOnClick from '$lib/components/ConfettiOnClick.svelte';
+	import AnswerButtonAnimation from '$lib/components/AnswerButtonAnimation.svelte';
 
 	import { Questions } from './utils';
 
@@ -90,7 +91,7 @@
 				showResult = false;
 				resultResponseText = '';
 				resolve(); // Resolve the promise after setting showResult to false
-			}, 400);
+			}, 550);
 		});
 
 		if (answerIsCorrect) {
@@ -143,6 +144,11 @@
 	</div>
 	<ConfettiOnClick />
 {:else}
+	{#if showResult}
+		<div class="absolute top-16">
+			<Modal resultat={resultResponseText} {answerIsCorrect} />
+		</div>
+	{/if}
 	<div>
 		<div class="pb-5 text-center text-2xl" translate="no" aria-live="assertive" role="presentation">
 			<div class="fixed top-0 sr-only">
@@ -167,9 +173,17 @@
 		<div class="text-center text-xl space-x-3" translate="no">
 			{#if task}
 				{#each task.alternatives as alternative, index}
-					<button class="p-4 border-2 rounded-md w-16 h-16" onclick={() => checkAnswer(alternative)}
-						>{alternative}</button
-					>
+					<button class="w-16 h-16" onclick={() => checkAnswer(alternative)}>
+						<span class="sr-only">{alternative}</span>
+						<span aria-hidden="true">
+							<AnswerButtonAnimation
+								answerIsCorrect={task.question.answer === alternative}
+								{alternative}
+								{index}
+								{task}
+							/>
+						</span>
+					</button>
 				{/each}
 			{/if}
 		</div>
@@ -179,8 +193,4 @@
 			</div>
 		</div>
 	</div>
-
-	{#if showResult}
-		<Modal resultat={resultResponseText} {answerIsCorrect} />
-	{/if}
 {/if}
