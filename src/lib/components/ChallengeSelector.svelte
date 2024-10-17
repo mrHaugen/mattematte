@@ -11,32 +11,32 @@
 		<h2 class="text-xl text-center font-bold">Challenge</h2>
 		<div class="flex flex-col space-y-2 items-center">
 			<button
-				on:click={() => selectChallenge(0.5)}
+				onclick={() => selectChallenge(0.5)}
 				class="p-2 border-2 rounded-md w-3/4 hover:scale-110 transition duration-150 ease-in-out"
 				>30 s</button
 			>
 			<button
-				on:click={() => selectChallenge(1)}
+				onclick={() => selectChallenge(1)}
 				class="p-2 border-2 rounded-md w-3/4 hover:scale-110 transition duration-150 ease-in-out"
 				>1 min</button
 			>
 			<button
-				on:click={() => selectChallenge(2)}
+				onclick={() => selectChallenge(2)}
 				class="p-2 border-2 rounded-md w-3/4 hover:scale-110 transition duration-150 ease-in-out"
 				>2 min</button
 			>
 			<button
-				on:click={() => selectChallenge(5)}
+				onclick={() => selectChallenge(5)}
 				class="p-2 border-2 rounded-md w-3/4 hover:scale-110 transition duration-150 ease-in-out"
 				>5 min</button
 			>
 			<button
-				on:click={() => selectChallenge(10)}
+				onclick={() => selectChallenge(10)}
 				class="p-2 border-2 rounded-md w-3/4 hover:scale-110 transition duration-150 ease-in-out"
 				>10 min</button
 			>
 			<button
-				on:click={() => selectChallenge(20)}
+				onclick={() => selectChallenge(20)}
 				class="p-2 border-2 rounded-md w-3/4 hover:scale-110 transition duration-150 ease-in-out"
 				>20 min</button
 			>

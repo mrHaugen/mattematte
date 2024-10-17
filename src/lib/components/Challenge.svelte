@@ -126,13 +126,13 @@
 			class="{showStartOverButton === false
 				? 'invisible'
 				: ''} p-4 border-2 rounded-md shadow-xl hover:scale-110 z-10"
-			on:click={() => {
+			onclick={() => {
 				goto(`/${$page.params.arithmeticOperation}`);
 			}}>En gang til!</button
 		>
 		<button
 			class="sr-only"
-			on:click={() => {
+			onclick={() => {
 				goto(`/${$page.params.arithmeticOperation}`);
 			}}>En gang til!</button
 		>

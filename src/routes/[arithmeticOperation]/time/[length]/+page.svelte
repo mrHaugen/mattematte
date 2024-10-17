@@ -92,7 +92,7 @@
 		<button
 			class="bg-green-300 py-3 px-2 border-2 w-full rounded-md text-xl hover:scale-110 transition duration-150 ease-in-out disabled:hover:scale-100 disabled:bg-gray-50 disabled:text-gray-300"
 			disabled={selectedTables.length === 0}
-			on:click={() => startChallange()}>Start</button
+			onclick={() => startChallange()}>Start</button
 		>
 	</div>
 {/if}
