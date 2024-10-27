@@ -18,6 +18,6 @@
 	{/each}
 </div>
 
-<div class="fixed bottom-0 py-5 text-gray-500 text-sm">
-	<span>Spørsmål? Kontakt oss på</span> <a class="hover:underline" href="mailto:post@1618.no">post@1618.no</a>
+<div class="flex flex-col text-center fixed bottom-0 py-5 text-gray-500 text-sm space-y-2">
+	<a class="underline hover:font-semibold" href="/om">Om mattematte.no</a>
 </div>
