@@ -4,10 +4,10 @@
 
 <BackButton url={'/'} />
 
-<div class="flex flex-col space-y-10 md:max-w-96">
+<div class="space-y-10 flex flex-col">
 
     <div>
-        <h1 class="text-lg" aria-label="This is how mattematte works">
+        <h1 class="text-xl" aria-label="This is how mattematte works">
             Slik funker mattematte.no
         </h1>
         <div class="space-y-4">
@@ -34,7 +34,7 @@
     </div>
 
     <div>
-        <h1 class="text-lg" aria-label="Privacy">
+        <h1 class="text-xl" aria-label="Privacy">
             Personvern
         </h1>
         <p>

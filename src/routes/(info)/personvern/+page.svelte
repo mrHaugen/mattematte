@@ -4,7 +4,7 @@
 
 <BackButton url={'/'} />
     
-<div class="space-y-4 flex flex-col md:max-w-96">
+<div class="space-y-4 flex flex-col">
     <h1 class="text-xl">
         Personvernerklæring for mattematte.no
     </h1>
