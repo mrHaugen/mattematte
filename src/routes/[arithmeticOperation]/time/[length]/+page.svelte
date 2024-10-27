@@ -55,8 +55,8 @@
 {#if challengeIsStarted === true}
 	<Challenge {timer} {selectedTables} {arithmeticOperation} />
 {:else}
-	<div>
-		<div class="flex flex-col items-center border-2 rounded-md pt-5 px-5 mb-6">
+	<div class="w-full md:w-1/3">
+		<div class="flex flex-col items-center rounded-md pt-5 px-5 mb-6">
 			<h1
 				class="text-center"
 				aria-label="Use checkboxes below to select tables to practise. Start excercise with start-button at bottom."
@@ -90,7 +90,7 @@
 		</div>
 
 		<button
-			class="bg-green-300 py-3 px-2 border-2 w-full rounded-md text-xl hover:scale-110 transition duration-150 ease-in-out disabled:hover:scale-100 disabled:bg-gray-50 disabled:text-gray-300"
+			class="bg-green-300 text-green-950 py-3 px-2 w-full rounded-md text-xl hover:bg-green-400 disabled:bg-gray-50 disabled:text-gray-300"
 			disabled={selectedTables.length === 0}
 			onclick={() => startChallange()}>Start</button
 		>
