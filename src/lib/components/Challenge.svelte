@@ -50,6 +50,51 @@
 		'Topp innsats! 🎖️'
 	];
 
+	const correctMessages = [
+		'Supert! 🌟',
+		'Riktig! 🎉',
+		'Du er flink! 😊',
+		'Kjempebra! 💪',
+		'Wow, så bra! 🤩',
+		'Helt riktig! ✨',
+		'Du klarte det! 🎈',
+		'Knallbra! 🔥',
+		'Superflink! ⭐',
+		'Bra jobba! 👏',
+		'Fantastisk! 🌈',
+		'Du er rå! 😎',
+		'Midt i blinken! 🎯',
+		'Toppen! 🏆',
+		'Ja, sånn ja! 🙌',
+		'Du kan dette! 🧠',
+		'Perfekt! 💯',
+		'Så smart du er! 🦉',
+		'Juhu, riktig! 🥳',
+		'Strålende! ☀️',
+		'Du er en stjerne! 🌟',
+		'Rett på! 👌',
+		'Genialt! 💡',
+		'Rakettbra! 🚀',
+		'Magisk! 🪄'
+	];
+
+	const wrongMessages = [
+		'Prøv igjen! 👍',
+		'Nesten! Prøv igjen 😊',
+		'Oi, prøv igjen! 🙈',
+		'Du klarer det! 💪',
+		'Ikke gi deg! 🌟',
+		'Prøv en gang til! 🍀',
+		'Tenk litt til! 🤔',
+		'Nære på! 😃',
+		'Nytt forsøk! 🎯',
+		'Du er snart der! 🐢'
+	];
+
+	function randomMessage(messages: string[]) {
+		return messages[Math.floor(Math.random() * messages.length)];
+	}
+
 	let multiplicationTables =
 		typeof selectedTables === 'string'
 			? selectedTables.split(',').map(Number)
@@ -81,7 +126,9 @@
 	async function checkAnswer(answer) {
 		const thinkTime = Date.now() - taskStartTime;
 		answerIsCorrect = multiplicationTable.checkAnswer(task, answer, thinkTime);
-		resultResponseText = answerIsCorrect ? 'Supert, du er flink!' : 'Prøv igjen 👍';
+		resultResponseText = answerIsCorrect
+			? randomMessage(correctMessages)
+			: randomMessage(wrongMessages);
 
 		showResult = true;
 
@@ -156,7 +203,7 @@
 {:else}
 	<div class="relative">
 		{#if showResult}
-			<div class="absolute bottom-full left-1/2 z-20 mb-6 w-max -translate-x-1/2">
+			<div class="absolute left-1/2 top-full z-20 mt-6 w-max -translate-x-1/2">
 				<Modal resultat={resultResponseText} {answerIsCorrect} />
 			</div>
 		{/if}
