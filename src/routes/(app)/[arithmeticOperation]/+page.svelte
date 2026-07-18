@@ -6,31 +6,35 @@
 	import { page } from '$app/stores';
 
 	const times = [0.5, 1, 2, 5, 10, 20];
+
+	function timeLabel(time: number): { value: string; unit: string } {
+		if (time === 0.5) return { value: '30', unit: 'sekunder' };
+		return { value: String(time), unit: time === 1 ? 'minutt' : 'minutter' };
+	}
 </script>
 
 <BackButton url={'/'} />
 
-<div class="w-full md:w-1/3">
-	<div class="align-center justify-center items-center space-y-3">
-		<h1
-			class="text-xl text-center font-bold"
-			aria-label="Use links below to select duration of excercise"
-		>
-			Challenge
-		</h1>
-		<div class="flex flex-col space-y-2 items-center">
-			{#each times as time}
-				<a
-					href="/{$page.params.arithmeticOperation}/time/{time}"
-					class="p-2 border-2 rounded-md w-full md:hover:scale-110 transition duration-150 ease-in-out text-center"
+<div class="w-full max-w-sm">
+	<h1
+		class="text-center text-2xl font-extrabold"
+		aria-label="Use links below to select duration of excercise"
+	>
+		Challenge
+	</h1>
+	<p class="mb-6 mt-1 text-center text-sm font-semibold text-slate-400">Hvor lenge vil du øve?</p>
+
+	<div class="grid grid-cols-2 gap-3">
+		{#each times as time}
+			<a
+				href="/{$page.params.arithmeticOperation}/time/{time}"
+				class="btn btn-white flex-col py-4"
+			>
+				<span class="text-3xl font-extrabold">{timeLabel(time).value}</span>
+				<span class="text-xs font-semibold uppercase tracking-wide text-slate-400"
+					>{timeLabel(time).unit}</span
 				>
-					{#if time === 0.5}
-						30 sekunder
-					{:else}
-						{time} {time === 1 ? 'minutt' : 'minutter'}
-					{/if}</a
-				>
-			{/each}
-		</div>
+			</a>
+		{/each}
 	</div>
 </div>

@@ -107,25 +107,35 @@
 
 {#if showSummary}
 	<div
-		class="flex flex-col items-center justify-center space-y-5"
+		class="card flex w-full max-w-sm flex-col items-center space-y-5 px-6 py-8"
 		aria-live="assertive"
 		role="presentation"
 	>
-		<div class="text-center text-xl font-medium">
+		<div class="text-center text-2xl font-extrabold">
 			{encouragingFeedback[Math.floor(Math.random() * encouragingFeedback.length)]}
 		</div>
-		<div class="text-center">
-			Du løste {numberOfCorrectAnswers} oppgaver!
-		</div>
-		<div class="text-center">
-			Det er {Math.round(numberOfCorrectAnswers / totalTime)} riktige svar i minuttet!
+		<div class="grid w-full grid-cols-2 gap-3">
+			<div class="rounded-2xl bg-emerald-50 px-3 py-4 text-center">
+				<div class="text-3xl font-extrabold text-emerald-600">{numberOfCorrectAnswers}</div>
+				<div class="text-xs font-semibold uppercase tracking-wide text-emerald-700/70">
+					oppgaver løst
+				</div>
+			</div>
+			<div class="rounded-2xl bg-sky-50 px-3 py-4 text-center">
+				<div class="text-3xl font-extrabold text-sky-600">
+					{Math.round(numberOfCorrectAnswers / totalTime)}
+				</div>
+				<div class="text-xs font-semibold uppercase tracking-wide text-sky-700/70">
+					riktige i minuttet
+				</div>
+			</div>
 		</div>
 		<button
 			aria-hidden="true"
 			transition:fade={{ delay: 2500, duration: 300 }}
 			class="{showStartOverButton === false
 				? 'invisible'
-				: ''} p-4 border-2 rounded-md shadow-xl hover:scale-110 z-10"
+				: ''} btn btn-primary z-10 w-full py-3 text-xl"
 			onclick={() => {
 				goto(`/${$page.params.arithmeticOperation}`);
 			}}>En gang til!</button
@@ -136,7 +146,7 @@
 				goto(`/${$page.params.arithmeticOperation}`);
 			}}>En gang til!</button
 		>
-		<div class="pt-10 text-center text-sm text-gray-500" aria-hidden="true">
+		<div class="pt-4 text-center text-sm text-slate-400" aria-hidden="true">
 			{Math.random() > 0.2
 				? 'Pro tips: Trykk for å kaste konfetti 🥳'
 				: 'Pro tips: Velg 2 minutter challenge og øv mens du pusser tenner 🪥 🦷'}
@@ -144,13 +154,13 @@
 	</div>
 	<ConfettiOnClick />
 {:else}
-	{#if showResult}
-		<div class="absolute top-16">
-			<Modal resultat={resultResponseText} {answerIsCorrect} />
-		</div>
-	{/if}
-	<div>
-		<div class="pb-5 text-center text-2xl" translate="no" aria-live="assertive" role="presentation">
+	<div class="relative">
+		{#if showResult}
+			<div class="absolute bottom-full left-1/2 z-20 mb-6 w-max -translate-x-1/2">
+				<Modal resultat={resultResponseText} {answerIsCorrect} />
+			</div>
+		{/if}
+		<div class="pb-8 text-center" translate="no" aria-live="assertive" role="presentation">
 			<div class="fixed top-0 sr-only">
 				{#if answerIsCorrect === true}
 					riktig
@@ -158,22 +168,24 @@
 					feil
 				{/if}
 			</div>
-			<div>
+			<div class="text-5xl font-extrabold tracking-wide sm:text-6xl">
 				{#if task}
 					{task.question.A}
-					{#if arithmeticOperation === 'multiplication'}
-						·
-					{:else if arithmeticOperation === 'division'}
-						:
-					{/if}
+					<span class="text-slate-400">
+						{#if arithmeticOperation === 'multiplication'}
+							·
+						{:else if arithmeticOperation === 'division'}
+							:
+						{/if}
+					</span>
 					{task.question.B}
 				{/if}
 			</div>
 		</div>
-		<div class="text-center text-xl space-x-3" translate="no">
+		<div class="flex justify-center gap-4 text-center text-xl" translate="no">
 			{#if task}
 				{#each task.alternatives as alternative, index}
-					<button class="w-16 h-16" onclick={() => checkAnswer(alternative)}>
+					<button class="h-20 w-20" onclick={() => checkAnswer(alternative)}>
 						<span class="sr-only">{alternative}</span>
 						<span aria-hidden="true">
 							<AnswerButtonAnimation
@@ -187,9 +199,20 @@
 				{/each}
 			{/if}
 		</div>
-		<div class="fixed top-4 right-20 mx-auto" aria-hidden="true">
-			<div class="text-md text-gray-600">
-				{Math.floor(timer / 60)}:{Math.floor(timer - Math.floor(timer / 60) * 60)}
+		<div class="fixed left-1/2 top-4 -translate-x-1/2" aria-hidden="true">
+			<div class="flex items-center gap-2">
+				<div
+					class="rounded-full border-2 border-slate-200 bg-white px-4 py-1 font-bold tabular-nums text-slate-600 shadow-sm"
+				>
+					{Math.floor(timer / 60)}:{String(timer % 60).padStart(2, '0')}
+				</div>
+				{#if numberOfCorrectAnswers > 0}
+					<div
+						class="rounded-full border-2 border-emerald-200 bg-emerald-50 px-3 py-1 font-bold tabular-nums text-emerald-600 shadow-sm"
+					>
+						✓ {numberOfCorrectAnswers}
+					</div>
+				{/if}
 			</div>
 		</div>
 	</div>

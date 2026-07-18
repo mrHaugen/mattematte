@@ -4,13 +4,13 @@
 
 <BackButton url={'/'} />
 
-<div class="space-y-10 flex flex-col">
+<div class="flex flex-col space-y-10">
 
     <div>
-        <h1 class="text-xl" aria-label="This is how mattematte works">
+        <h1 class="mb-3 text-2xl font-extrabold" aria-label="This is how mattematte works">
             Slik funker mattematte.no
         </h1>
-        <div class="space-y-4">
+        <div class="space-y-4 leading-relaxed text-slate-600">
             <p>
                 Du velger selv hvilke tabeller du vil øve på og hvor lenge du vil øve. Du kan velge en eller flere tabeller.
             </p>
@@ -27,22 +27,22 @@
             <p>
                 Det er dette som gjør det supereffektivt å øve med mattematte.no!
             </p>
-            <p class="font-semibold">
+            <p class="font-semibold text-slate-800">
                 Lykke til!
             </p>
         </div>
     </div>
 
     <div>
-        <h1 class="text-xl" aria-label="Privacy">
+        <h2 class="mb-3 text-xl font-extrabold" aria-label="Privacy">
             Personvern
-        </h1>
-        <p>
-            Her finner du info om <a class="underline hover:text-semibold" href="/personvern">personvern</a>.
+        </h2>
+        <p class="leading-relaxed text-slate-600">
+            Her finner du info om <a class="font-semibold underline decoration-slate-300 underline-offset-4 hover:text-slate-800" href="/personvern">personvern</a>.
         </p>
     </div>
 
-    <div>
-        <span>Spørsmål? Kontakt oss på <a class="underline hover:font-semibold" href="mailto:post@1618.no">post@1618.no</a></span>
+    <div class="border-t-2 border-slate-100 pt-6 text-sm text-slate-500">
+        <span>Spørsmål? Kontakt oss på <a class="font-semibold underline decoration-slate-300 underline-offset-4 hover:text-slate-800" href="mailto:post@1618.no">post@1618.no</a></span>
     </div>
 </div>

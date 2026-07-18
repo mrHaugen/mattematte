@@ -12,25 +12,27 @@
 	aria-modal="true"
 	aria-hidden="true"
 >
-	<div class="fixed inset-0 bg-gray-500 bg-opacity-0 transition-opacity"></div>
 	<div
-		class="w-full overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:p-6"
+		class="flex items-center gap-3 rounded-2xl border-2 px-5 py-3 shadow-lg {answerIsCorrect
+			? 'border-emerald-200 bg-emerald-50'
+			: 'border-rose-200 bg-rose-50'}"
 	>
-		<div>
-			{#if answerIsCorrect}
-				<div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-					{@html HappySmileIcon}
-				</div>
-			{:else}
-				<div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
-					{@html SadSmileIcon}
-				</div>
-			{/if}
-			<div class="mt-3 text-center sm:mt-5">
-				<h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-					{resultat}
-				</h3>
+		{#if answerIsCorrect}
+			<div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-100">
+				{@html HappySmileIcon}
 			</div>
-		</div>
+		{:else}
+			<div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-rose-100">
+				{@html SadSmileIcon}
+			</div>
+		{/if}
+		<h3
+			class="whitespace-nowrap text-base font-bold {answerIsCorrect
+				? 'text-emerald-800'
+				: 'text-rose-800'}"
+			id="modal-title"
+		>
+			{resultat}
+		</h3>
 	</div>
 </div>

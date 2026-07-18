@@ -1,4 +1,29 @@
 /* Write your global styles here, in PostCSS syntax */
 @tailwind base;
 @tailwind components;
-@tailwind utilities
+@tailwind utilities;
+
+@layer base {
+	body {
+		@apply bg-gradient-to-b from-sky-50 via-white to-amber-50 text-slate-800 antialiased;
+	}
+}
+
+@layer components {
+	/* Chunky, pressable button base shared by all button styles */
+	.btn {
+		@apply inline-flex items-center justify-center rounded-2xl border-2 border-b-4 font-bold transition-all duration-100 active:translate-y-0.5 active:border-b-2 disabled:pointer-events-none;
+	}
+
+	.btn-white {
+		@apply border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50;
+	}
+
+	.btn-primary {
+		@apply border-emerald-600 bg-emerald-500 text-white hover:bg-emerald-400 disabled:border-slate-200 disabled:bg-slate-100 disabled:text-slate-300;
+	}
+
+	.card {
+		@apply rounded-3xl border-2 border-slate-200 bg-white shadow-sm;
+	}
+}

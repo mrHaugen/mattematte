@@ -55,42 +55,39 @@
 {#if challengeIsStarted === true}
 	<Challenge {timer} {selectedTables} {arithmeticOperation} />
 {:else}
-	<div class="w-full md:w-1/3">
-		<div class="flex flex-col items-center rounded-md pt-5 px-5 mb-6">
-			<h1
-				class="text-center"
-				aria-label="Use checkboxes below to select tables to practise. Start excercise with start-button at bottom."
-			>
-				Velg tabeller å øve på
-			</h1>
-			<div class="py-8 space-y-4">
-				{#each tablesArray as table}
-					<div class="relative flex items-start">
-						<div class="mr-3 text-sm leading-6">
-							<label for={table.name} class="font-medium text-gray-900">{table.value}</label>
-						</div>
-						<div class="flex h-6 items-center">
-							<!-- <label for="hs-basic-usage" class="sr-only">switch</label> -->
-							<input
-								bind:group={selectedTables}
-								value={table.value}
-								id={table.name}
-								aria-describedby="the ${table.name} times table"
-								name={table.name}
-								type="checkbox"
-								class="
-								relative w-11 h-6 p-px bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600
-								before:inline-block before:w-5 before:h-5 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-gray-400 dark:checked:before:bg-blue-200
-							"
-							/>
-						</div>
-					</div>
-				{/each}
-			</div>
+	<div class="flex w-full max-w-sm flex-col items-center">
+		<h1
+			class="text-center text-2xl font-extrabold"
+			aria-label="Use checkboxes below to select tables to practise. Start excercise with start-button at bottom."
+		>
+			Velg tabeller
+		</h1>
+		<p class="mt-1 text-center text-sm font-semibold text-slate-400">
+			Hvilke tabeller vil du øve på?
+		</p>
+		<div class="grid grid-cols-3 gap-3 py-8">
+			{#each tablesArray as table}
+				<label for={table.name} class="cursor-pointer">
+					<input
+						bind:group={selectedTables}
+						value={table.value}
+						id={table.name}
+						aria-describedby="the ${table.name} times table"
+						name={table.name}
+						type="checkbox"
+						class="peer sr-only"
+					/>
+					<span
+						aria-hidden="true"
+						class="btn btn-white flex h-20 w-20 text-3xl font-extrabold text-slate-400 peer-checked:border-emerald-600 peer-checked:bg-emerald-500 peer-checked:text-white peer-checked:hover:bg-emerald-400 peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-500 peer-focus-visible:ring-offset-2"
+						>{table.value}</span
+					>
+				</label>
+			{/each}
 		</div>
 
 		<button
-			class="bg-green-300 text-green-950 py-3 px-2 w-full rounded-md text-xl hover:bg-green-400 disabled:bg-gray-50 disabled:text-gray-300"
+			class="btn btn-primary w-full py-3 text-xl"
 			disabled={selectedTables.length === 0}
 			onclick={() => startChallange()}>Start</button
 		>
