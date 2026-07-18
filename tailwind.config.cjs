@@ -12,9 +12,7 @@ const config = {
     }
   },
 
-  plugins: [
-    require('@tailwindcss/forms'),
-  ]
+  plugins: []
 };
 
 module.exports = config;

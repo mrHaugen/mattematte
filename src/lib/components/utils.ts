@@ -59,10 +59,6 @@ class Questions {
 		return table;
 	}
 
-	forEach(callback) {
-		this.questions.forEach(callback);
-	}
-
 	updateObject(A, B, updateValues) {
 		// Find the object with the given values of A and B
 		const foundObjectIndex = this.questions.findIndex((obj) => obj.A === A && obj.B === B);
