@@ -7,7 +7,7 @@
 	import { goto } from '$app/navigation';
 
 	import ConfettiOnClick from '$lib/components/ConfettiOnClick.svelte';
-	import AnswerButtonAnimation from '$lib/components/AnswerButtonAnimation.svelte';
+	import AnswerButton from '$lib/components/AnswerButton.svelte';
 
 	import { Questions } from './utils';
 
@@ -184,18 +184,13 @@
 		</div>
 		<div class="flex justify-center gap-4 text-center text-xl" translate="no">
 			{#if task}
-				{#each task.alternatives as alternative, index}
-					<button class="h-20 w-20" onclick={() => checkAnswer(alternative)}>
-						<span class="sr-only">{alternative}</span>
-						<span aria-hidden="true">
-							<AnswerButtonAnimation
-								answerIsCorrect={task.question.answer === alternative}
-								{alternative}
-								{index}
-								{task}
-							/>
-						</span>
-					</button>
+				{#each task.alternatives as alternative}
+					<AnswerButton
+						{alternative}
+						{task}
+						isCorrect={task.question.answer === alternative}
+						onselect={() => checkAnswer(alternative)}
+					/>
 				{/each}
 			{/if}
 		</div>
