@@ -1,0 +1,1 @@
+import{F as T,R as c,G as q,K as x,X as A}from"./runtime.883192d8.js";function S(i,r){return i===r||(i==null?void 0:i[A])===r}function E(i={},r,h,k){return T(()=>{var s,f;return c(()=>{s=f,f=(k==null?void 0:k())||[],q(()=>{i!==h(...f)&&(r(i,...f),s&&S(h(...s),i)&&r(null,...s))})}),()=>{x(()=>{f&&S(h(...f),i)&&r(null,...f)})}}),i}export{E as b};
