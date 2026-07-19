@@ -1,5 +1,6 @@
 <script>
 	import '../app.pcss';
+	let { children } = $props();
 </script>
 
 <svelte:head>
@@ -7,4 +8,4 @@
 	<title>mattematte.no</title>
 </svelte:head>
 
-<slot />
+{@render children()}

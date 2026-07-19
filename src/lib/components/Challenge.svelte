@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
-	import Modal from '$lib/components/Modal.svelte';
+	import Modal from '#lib/components/Modal.svelte';
 	import { goto } from '$app/navigation';
 
-	import ConfettiOnClick from '$lib/components/ConfettiOnClick.svelte';
-	import AnswerButton from '$lib/components/AnswerButton.svelte';
+	import ConfettiOnClick from '#lib/components/ConfettiOnClick.svelte';
+	import AnswerButton from '#lib/components/AnswerButton.svelte';
 
 	import { Questions } from './utils';
 
@@ -20,7 +20,7 @@
 	let showStartOverButton: boolean = $state(false);
 
 	let { timer = 180, selectedTables, arithmeticOperation } = $props();
-	let totalTime = $page.params.length;
+	let totalTime = Number(page.params.length);
 
 	const encouragingFeedback = [
 		'Fantastisk jobb! 👏',
@@ -184,13 +184,13 @@
 				? 'invisible'
 				: ''} btn btn-primary z-10 w-full py-3 text-xl"
 			onclick={() => {
-				goto(`/${$page.params.arithmeticOperation}`);
+				goto(`/${page.params.arithmeticOperation}`);
 			}}>En gang til!</button
 		>
 		<button
 			class="sr-only"
 			onclick={() => {
-				goto(`/${$page.params.arithmeticOperation}`);
+				goto(`/${page.params.arithmeticOperation}`);
 			}}>En gang til!</button
 		>
 		<div class="pt-4 text-center text-sm text-slate-400" aria-hidden="true">

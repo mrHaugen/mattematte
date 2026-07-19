@@ -1,9 +1,7 @@
 <script lang="ts">
-	import BackButton from '$lib/components/BackButton.svelte';
+	import BackButton from '#lib/components/BackButton.svelte';
 
-	import type { PageData } from './$types';
-	export let data: PageData;
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	const times = [0.5, 1, 2, 5, 10, 20];
 
@@ -27,7 +25,7 @@
 	<div class="grid grid-cols-2 gap-3">
 		{#each times as time}
 			<a
-				href="/{$page.params.arithmeticOperation}/time/{time}"
+				href="/{page.params.arithmeticOperation}/time/{time}"
 				class="btn btn-white flex-col py-4"
 			>
 				<span class="text-3xl font-extrabold">{timeLabel(time).value}</span>

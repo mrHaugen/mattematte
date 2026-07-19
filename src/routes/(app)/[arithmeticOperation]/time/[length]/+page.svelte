@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
+	import { browser } from '$app/env';
 
-	import Challenge from '$lib/components/Challenge.svelte';
-	import BackButton from '$lib/components/BackButton.svelte';
+	import Challenge from '#lib/components/Challenge.svelte';
+	import BackButton from '#lib/components/BackButton.svelte';
 
 	let challengeIsStarted: boolean = $state(false);
 	let timer: number;
-	const arithmeticOperation = $page.params.arithmeticOperation;
+	const arithmeticOperation = page.params.arithmeticOperation ?? '';
 	const arithmeticOperationCapitilized =
 		arithmeticOperation.charAt(0).toUpperCase() + arithmeticOperation.slice(1);
 
@@ -46,7 +46,7 @@
 	});
 
 	onMount(() => {
-		timer = Number($page.params.length) * 60;
+		timer = Number(page.params.length) * 60;
 	});
 </script>
 

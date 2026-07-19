@@ -1,8 +1,8 @@
 <script lang="ts">
 	export let resultat: string;
 	export let answerIsCorrect: boolean;
-	import HappySmileIcon from '$lib/icons/HappySmileIcon.svg?raw';
-	import SadSmileIcon from '$lib/icons/SadSmileIcon.svg?raw';
+	import HappySmileIcon from '#lib/icons/HappySmileIcon.svg?raw';
+	import SadSmileIcon from '#lib/icons/SadSmileIcon.svg?raw';
 </script>
 
 <div

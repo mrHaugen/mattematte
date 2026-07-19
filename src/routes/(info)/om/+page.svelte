@@ -1,5 +1,5 @@
 <script>
-    import BackButton from '$lib/components/BackButton.svelte';
+    import BackButton from '#lib/components/BackButton.svelte';
 </script>
 
 <BackButton url={'/'} />
