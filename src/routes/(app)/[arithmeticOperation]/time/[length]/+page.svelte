@@ -61,7 +61,7 @@
 			Hvilke tabeller vil du øve på?
 		</p>
 		<div class="grid grid-cols-3 gap-3 py-8">
-			{#each tablesArray as table}
+			{#each tablesArray as table (table.value)}
 				<label for={table.name} class="cursor-pointer">
 					<input
 						bind:group={selectedTables}
@@ -74,7 +74,7 @@
 					/>
 					<span
 						aria-hidden="true"
-						class="btn btn-white flex h-20 w-20 text-3xl font-extrabold text-slate-400 peer-checked:border-emerald-600 peer-checked:bg-emerald-500 peer-checked:text-white peer-checked:hover:bg-emerald-400 peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-500 peer-focus-visible:ring-offset-2"
+						class="btn btn-white flex h-20 w-20 text-3xl font-extrabold text-slate-400 peer-checked:border-emerald-600 peer-checked:bg-emerald-500 peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-500 peer-focus-visible:ring-offset-2 peer-checked:hover:bg-emerald-400"
 						>{table.value}</span
 					>
 				</label>

@@ -170,7 +170,7 @@
 		<div class="grid w-full grid-cols-2 gap-3">
 			<div class="rounded-2xl bg-emerald-50 px-3 py-4 text-center">
 				<div class="text-3xl font-extrabold text-emerald-600">{numberOfCorrectAnswers}</div>
-				<div class="text-xs font-semibold uppercase tracking-wide text-emerald-700/70">
+				<div class="text-xs font-semibold tracking-wide text-emerald-700/70 uppercase">
 					oppgaver løst
 				</div>
 			</div>
@@ -178,7 +178,7 @@
 				<div class="text-3xl font-extrabold text-sky-600">
 					{Math.round(numberOfCorrectAnswers / totalTime)}
 				</div>
-				<div class="text-xs font-semibold uppercase tracking-wide text-sky-700/70">
+				<div class="text-xs font-semibold tracking-wide text-sky-700/70 uppercase">
 					riktige i minuttet
 				</div>
 			</div>
@@ -209,12 +209,12 @@
 {:else}
 	<div class="relative">
 		{#if showResult}
-			<div class="absolute left-1/2 top-full z-20 mt-6 w-max -translate-x-1/2">
+			<div class="absolute top-full left-1/2 z-20 mt-6 w-max -translate-x-1/2">
 				<Modal resultat={resultResponseText} {answerIsCorrect} />
 			</div>
 		{/if}
 		<div class="pb-8 text-center" translate="no" aria-live="assertive" role="presentation">
-			<div class="fixed top-0 sr-only">
+			<div class="sr-only fixed top-0">
 				{#if answerIsCorrect === true}
 					riktig
 				{:else if answerIsCorrect === false}
@@ -237,7 +237,7 @@
 		</div>
 		<div class="flex justify-center gap-4 text-center text-xl" translate="no">
 			{#if task}
-				{#each task.alternatives as alternative}
+				{#each task.alternatives as alternative, index (index)}
 					<AnswerButton
 						{alternative}
 						{task}
@@ -247,16 +247,16 @@
 				{/each}
 			{/if}
 		</div>
-		<div class="fixed left-1/2 top-4 -translate-x-1/2" aria-hidden="true">
+		<div class="fixed top-4 left-1/2 -translate-x-1/2" aria-hidden="true">
 			<div class="flex items-center gap-2">
 				<div
-					class="rounded-full border-2 border-slate-200 bg-white px-4 py-1 font-bold tabular-nums text-slate-600 shadow-xs"
+					class="rounded-full border-2 border-slate-200 bg-white px-4 py-1 font-bold text-slate-600 tabular-nums shadow-xs"
 				>
 					{Math.floor(timer / 60)}:{String(timer % 60).padStart(2, '0')}
 				</div>
 				{#if numberOfCorrectAnswers > 0}
 					<div
-						class="rounded-full border-2 border-emerald-200 bg-emerald-50 px-3 py-1 font-bold tabular-nums text-emerald-600 shadow-xs"
+						class="rounded-full border-2 border-emerald-200 bg-emerald-50 px-3 py-1 font-bold text-emerald-600 tabular-nums shadow-xs"
 					>
 						✓ {numberOfCorrectAnswers}
 					</div>

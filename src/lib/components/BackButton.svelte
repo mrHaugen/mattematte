@@ -2,7 +2,7 @@
 	let { url } = $props();
 </script>
 
-<div class="absolute left-3 top-3 z-10" aria-hidden="true">
+<div class="absolute top-3 left-3 z-10" aria-hidden="true">
 	<a
 		class="flex flex-row items-center gap-1.5 rounded-full border-2 border-slate-200 bg-white/80 px-3 py-1.5 text-sm font-semibold text-slate-500 shadow-xs backdrop-blur-sm transition-colors hover:border-slate-300 hover:text-slate-700"
 		href={url}

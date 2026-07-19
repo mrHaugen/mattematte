@@ -47,6 +47,7 @@
 	}
 
 	$effect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-unused-expressions -- read task so the effect re-runs on every new question
 		task;
 		play('anim-pop-in', '');
 	});
@@ -95,10 +96,8 @@
 		}}>{alternative}</span
 	>
 	{#each particles as particle (particle.id)}
-		<span
-			class="particle"
-			style="--dx: {particle.dx}px; --dy: {particle.dy}px"
-			aria-hidden="true">{particle.emoji}</span
+		<span class="particle" style="--dx: {particle.dx}px; --dy: {particle.dy}px" aria-hidden="true"
+			>{particle.emoji}</span
 		>
 	{/each}
 </button>

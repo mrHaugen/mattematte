@@ -3,19 +3,18 @@
 
 	const duration = 2000;
 
-	let things: any = [];
-	let timeout: any;
+	let things: { id: number; x: number; y: number }[] = $state([]);
+	let timeout: ReturnType<typeof setTimeout> | undefined;
+	let nextId = 0;
 
-	async function moveConfetti(event: any) {
-		const { target, clientX, clientY } = event;
+	function moveConfetti(event: MouseEvent) {
+		const target = event.currentTarget as HTMLElement;
+		const rect = target.getBoundingClientRect();
 
-		const elementY = target.getBoundingClientRect().top;
-		const elementX = target.getBoundingClientRect().left;
+		const x = event.clientX - rect.left;
+		const y = event.clientY - rect.top;
 
-		const x = clientX - elementX;
-		const y = clientY - elementY;
-
-		things = [...things, { x, y }];
+		things = [...things, { id: nextId++, x, y }];
 
 		clearTimeout(timeout);
 
@@ -23,8 +22,8 @@
 	}
 </script>
 
-<div class="fixed top-0 h-full w-full" on:mousedown={moveConfetti} aria-hidden="true">
-	{#each things as thing}
+<div class="fixed top-0 h-full w-full" onmousedown={moveConfetti} aria-hidden="true">
+	{#each things as thing (thing.id)}
 		<div class="absolute" style="left: {thing.x}px; top: {thing.y}px">
 			<Confetti y={[-2, 2]} x={[-2, 2]} fallDistance="50px" amount={70} {duration} />
 		</div>

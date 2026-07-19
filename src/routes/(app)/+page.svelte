@@ -33,7 +33,7 @@
 	</h1>
 
 	<div class="flex flex-col space-y-3">
-		{#each arithmeticOperations as operation}
+		{#each arithmeticOperations as operation (operation.link)}
 			<a
 				class="btn btn-white {operation.hover} group gap-4 p-4 text-left"
 				translate="no"
@@ -63,7 +63,8 @@
 </div>
 
 <div class="fixed bottom-0 flex flex-col py-5 text-center text-sm text-slate-400">
-	<a class="font-semibold underline decoration-slate-300 underline-offset-4 hover:text-slate-600" href="/om"
-		>Om mattematte.no</a
+	<a
+		class="font-semibold underline decoration-slate-300 underline-offset-4 hover:text-slate-600"
+		href="/om">Om mattematte.no</a
 	>
 </div>

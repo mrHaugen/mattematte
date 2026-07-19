@@ -11,7 +11,7 @@
 	}
 </script>
 
-<BackButton url={'/'} />
+<BackButton url="/" />
 
 <div class="w-full max-w-sm">
 	<h1
@@ -20,16 +20,13 @@
 	>
 		Challenge
 	</h1>
-	<p class="mb-6 mt-1 text-center text-sm font-semibold text-slate-400">Hvor lenge vil du øve?</p>
+	<p class="mt-1 mb-6 text-center text-sm font-semibold text-slate-400">Hvor lenge vil du øve?</p>
 
 	<div class="grid grid-cols-2 gap-3">
-		{#each times as time}
-			<a
-				href="/{page.params.arithmeticOperation}/time/{time}"
-				class="btn btn-white flex-col py-4"
-			>
+		{#each times as time (time)}
+			<a href="/{page.params.arithmeticOperation}/time/{time}" class="btn btn-white flex-col py-4">
 				<span class="text-3xl font-extrabold">{timeLabel(time).value}</span>
-				<span class="text-xs font-semibold uppercase tracking-wide text-slate-400"
+				<span class="text-xs font-semibold tracking-wide text-slate-400 uppercase"
 					>{timeLabel(time).unit}</span
 				>
 			</a>

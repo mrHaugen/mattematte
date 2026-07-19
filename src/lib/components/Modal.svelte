@@ -20,15 +20,17 @@
 	>
 		{#if answerIsCorrect}
 			<div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-100">
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -- static bundled SVG -->
 				{@html HappySmileIcon}
 			</div>
 		{:else}
 			<div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-rose-100">
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -- static bundled SVG -->
 				{@html SadSmileIcon}
 			</div>
 		{/if}
 		<h3
-			class="whitespace-nowrap text-base font-bold {answerIsCorrect
+			class="text-base font-bold whitespace-nowrap {answerIsCorrect
 				? 'text-emerald-800'
 				: 'text-rose-800'}"
 			id="modal-title"
