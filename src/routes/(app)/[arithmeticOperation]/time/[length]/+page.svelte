@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { onMount } from 'svelte';
 	import { browser } from '$app/env';
 
 	import Challenge from '#lib/components/Challenge.svelte';
 	import BackButton from '#lib/components/BackButton.svelte';
 
 	let challengeIsStarted: boolean = $state(false);
-	let timer: number;
+	const timer = Number(page.params.length) * 60;
 	const arithmeticOperation = page.params.arithmeticOperation ?? '';
 	const arithmeticOperationCapitilized =
 		arithmeticOperation.charAt(0).toUpperCase() + arithmeticOperation.slice(1);
@@ -43,10 +42,6 @@
 			default:
 				break;
 		}
-	});
-
-	onMount(() => {
-		timer = Number(page.params.length) * 60;
 	});
 </script>
 

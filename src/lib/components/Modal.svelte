@@ -1,8 +1,9 @@
 <script lang="ts">
-	export let resultat: string;
-	export let answerIsCorrect: boolean;
 	import HappySmileIcon from '#lib/icons/HappySmileIcon.svg?raw';
 	import SadSmileIcon from '#lib/icons/SadSmileIcon.svg?raw';
+
+	let { resultat, answerIsCorrect }: { resultat: string; answerIsCorrect: boolean | undefined } =
+		$props();
 </script>
 
 <div

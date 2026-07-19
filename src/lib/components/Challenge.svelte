@@ -9,7 +9,7 @@
 	import ConfettiOnClick from '#lib/components/ConfettiOnClick.svelte';
 	import AnswerButton from '#lib/components/AnswerButton.svelte';
 
-	import { Questions } from './utils';
+	import { Questions, type Task } from './utils';
 
 	let resultResponseText = $state('');
 	let answerIsCorrect: boolean | undefined = $state(undefined);
@@ -19,7 +19,11 @@
 
 	let showStartOverButton: boolean = $state(false);
 
-	let { timer = 180, selectedTables, arithmeticOperation } = $props();
+	let {
+		timer = 180,
+		selectedTables,
+		arithmeticOperation
+	}: { timer?: number; selectedTables: string | number[]; arithmeticOperation: string } = $props();
 	let totalTime = Number(page.params.length);
 
 	const encouragingFeedback = [
@@ -95,10 +99,9 @@
 		return messages[Math.floor(Math.random() * messages.length)];
 	}
 
-	let multiplicationTables =
-		typeof selectedTables === 'string'
-			? selectedTables.split(',').map(Number)
-			: (selectedTables = selectedTables);
+	const multiplicationTables: number[] = $derived(
+		typeof selectedTables === 'string' ? selectedTables.split(',').map(Number) : selectedTables
+	);
 
 	let countdownTimer = setInterval(() => {
 		if (timer > 0) {
@@ -113,9 +116,11 @@
 		}
 	}, 1000);
 
+	// The operation is fixed for the lifetime of a challenge, so the initial value is intended
+	// svelte-ignore state_referenced_locally
 	const multiplicationTable = new Questions(arithmeticOperation);
 
-	let task = $state(undefined);
+	let task: Task | undefined = $state(undefined);
 	let taskStartTime: number;
 
 	function getNewTask() {
@@ -123,7 +128,8 @@
 		taskStartTime = Date.now();
 	}
 
-	async function checkAnswer(answer) {
+	async function checkAnswer(answer: number) {
+		if (!task) return;
 		const thinkTime = Date.now() - taskStartTime;
 		answerIsCorrect = multiplicationTable.checkAnswer(task, answer, thinkTime);
 		resultResponseText = answerIsCorrect
@@ -133,7 +139,7 @@
 		showResult = true;
 
 		// Show result for a short time
-		await new Promise((resolve) => {
+		await new Promise<void>((resolve) => {
 			setTimeout(() => {
 				showResult = false;
 				resultResponseText = '';

@@ -1,7 +1,32 @@
+export interface Question {
+	table: number;
+	A: number;
+	B: number;
+	answer: number;
+	thinkTime: number;
+	correct: number;
+	incorrect: number;
+}
+
+export interface Task {
+	question: Question;
+	alternatives: number[];
+}
+
+interface Sensitivity {
+	thinkTime: number;
+	correctAnswers: number;
+	incorrectAnswers: number;
+}
+
 class Questions {
+	sensitivity: Sensitivity;
+	operation: string;
+	questions: Question[];
+
 	constructor(
 		operation = 'multiplication',
-		sensitivity = { thinkTime: 1, correctAnswers: 1, incorrectAnswers: 1 }
+		sensitivity: Sensitivity = { thinkTime: 1, correctAnswers: 1, incorrectAnswers: 1 }
 	) {
 		this.sensitivity = sensitivity;
 		this.operation = operation; // Store the operation value for use in updateObject()
@@ -20,8 +45,9 @@ class Questions {
 			}
 		}
 	}
-	generateTable(operation) {
-		const table = [];
+
+	generateTable(operation: string): Question[] {
+		const table: Question[] = [];
 		if (operation === 'multiplication') {
 			for (let i = 1; i <= 10; i++) {
 				for (let j = 1; j <= 10; j++) {
@@ -59,20 +85,11 @@ class Questions {
 		return table;
 	}
 
-	updateObject(A, B, updateValues) {
+	updateObject(A: number, B: number, updateValues: Partial<Question>) {
 		// Find the object with the given values of A and B
-		const foundObjectIndex = this.questions.findIndex((obj) => obj.A === A && obj.B === B);
-		if (foundObjectIndex !== -1) {
-			// Update the object with the new values
-			for (let key in updateValues) {
-				if (typeof updateValues[key] === 'function') {
-					this.questions[foundObjectIndex][key] = updateValues[key](
-						this.questions[foundObjectIndex][key]
-					);
-				} else {
-					this.questions[foundObjectIndex][key] = updateValues[key];
-				}
-			}
+		const foundObject = this.questions.find((obj) => obj.A === A && obj.B === B);
+		if (foundObject) {
+			Object.assign(foundObject, updateValues);
 			if (!import.meta.env.SSR) {
 				// Update localStorage if running on client side
 				localStorage.setItem(this.operation + 'Table', JSON.stringify(this.questions));
@@ -82,32 +99,33 @@ class Questions {
 		}
 	}
 
-	incrementCorrect(task) {
+	incrementCorrect(task: Task): Task {
 		this.updateObject(task.question.A, task.question.B, { correct: task.question.correct + 1 });
 		return task;
 	}
-	incrementIncorrect(task) {
+
+	incrementIncorrect(task: Task): Task {
 		this.updateObject(task.question.A, task.question.B, { incorrect: task.question.incorrect + 1 });
 		return task;
 	}
-	updateThinkTime(task, thinkTime) {
+
+	updateThinkTime(task: Task, thinkTime: number): Task {
 		this.updateObject(task.question.A, task.question.B, { thinkTime: thinkTime });
 		return task;
 	}
 
-	checkAnswer(task, answer, thinkTime) {
+	checkAnswer(task: Task, answer: number, thinkTime: number): boolean {
 		const answerIsCorrect = task.question.answer === answer;
-		if (answerIsCorrect === true) {
+		if (answerIsCorrect) {
 			this.incrementCorrect(task);
 			this.updateThinkTime(task, thinkTime);
 			return true;
-		} else if (answerIsCorrect === false) {
-			this.incrementIncorrect(task);
-			return false;
 		}
+		this.incrementIncorrect(task);
+		return false;
 	}
 
-	pickRandomQuestion(selectedTables) {
+	pickRandomQuestion(selectedTables: number[]): Question {
 		// Filter questions based on selected tables
 		const filteredQuestions = this.questions.filter((question) =>
 			selectedTables.includes(question.table)
@@ -144,15 +162,14 @@ class Questions {
 		return filteredQuestions[0];
 	}
 
-	generateAlternatives(A, B, correctAnswer) {
-		const alternatives = [];
+	generateAlternatives(A: number, B: number, correctAnswer: number): number[] {
+		const alternatives: number[] = [];
 		const addOrSubtract = Math.random() < 0.5 ? 1 : -1;
 		switch (this.operation) {
 			case 'multiplication':
 				alternatives.push(correctAnswer);
 				alternatives.push(A * (B + addOrSubtract));
 				alternatives.push(A * (B + 2 * addOrSubtract));
-
 				break;
 			case 'division':
 				alternatives.push(correctAnswer);
@@ -172,7 +189,7 @@ class Questions {
 		return alternatives;
 	}
 
-	getRandomTask(selectedTables) {
+	getRandomTask(selectedTables: number[]): Task {
 		// Pick a random question from the selected tables
 		const randomQuestion = this.pickRandomQuestion(selectedTables);
 
