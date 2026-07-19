@@ -250,13 +250,13 @@
 		<div class="fixed left-1/2 top-4 -translate-x-1/2" aria-hidden="true">
 			<div class="flex items-center gap-2">
 				<div
-					class="rounded-full border-2 border-slate-200 bg-white px-4 py-1 font-bold tabular-nums text-slate-600 shadow-sm"
+					class="rounded-full border-2 border-slate-200 bg-white px-4 py-1 font-bold tabular-nums text-slate-600 shadow-xs"
 				>
 					{Math.floor(timer / 60)}:{String(timer % 60).padStart(2, '0')}
 				</div>
 				{#if numberOfCorrectAnswers > 0}
 					<div
-						class="rounded-full border-2 border-emerald-200 bg-emerald-50 px-3 py-1 font-bold tabular-nums text-emerald-600 shadow-sm"
+						class="rounded-full border-2 border-emerald-200 bg-emerald-50 px-3 py-1 font-bold tabular-nums text-emerald-600 shadow-xs"
 					>
 						✓ {numberOfCorrectAnswers}
 					</div>

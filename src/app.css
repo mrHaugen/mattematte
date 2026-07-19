@@ -1,11 +1,14 @@
-/* Write your global styles here, in PostCSS syntax */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+	--font-sans:
+		ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa, ui-sans-serif, system-ui,
+		sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
 
 @layer base {
 	body {
-		@apply bg-gradient-to-b from-sky-50 via-white to-amber-50 text-slate-800 antialiased;
+		@apply bg-linear-to-b from-sky-50 via-white to-amber-50 text-slate-800 antialiased;
 	}
 }
 
@@ -24,6 +27,6 @@
 	}
 
 	.card {
-		@apply rounded-3xl border-2 border-slate-200 bg-white shadow-sm;
+		@apply rounded-3xl border-2 border-slate-200 bg-white shadow-xs;
 	}
 }
