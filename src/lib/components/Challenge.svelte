@@ -8,8 +8,9 @@
 
 	import ConfettiOnClick from '#lib/components/ConfettiOnClick.svelte';
 	import AnswerButton from '#lib/components/AnswerButton.svelte';
+	import GuidedSteps from '#lib/components/GuidedSteps.svelte';
 
-	import { Questions, type Task } from './utils';
+	import { Questions, bigMultiplicationHintLines, type Task } from './utils';
 
 	let resultResponseText = $state('');
 	let answerIsCorrect: boolean | undefined = $state(undefined);
@@ -18,12 +19,21 @@
 	let numberOfCorrectAnswers = $state(0);
 
 	let showStartOverButton: boolean = $state(false);
+	let revealedHints = $state(0);
 
 	let {
 		timer = 180,
 		selectedTables,
-		arithmeticOperation
-	}: { timer?: number; selectedTables: string | number[]; arithmeticOperation: string } = $props();
+		arithmeticOperation,
+		mode = undefined,
+		restartUrl = undefined
+	}: {
+		timer?: number;
+		selectedTables: string | number[];
+		arithmeticOperation: string;
+		mode?: 'easy' | 'hard';
+		restartUrl?: string;
+	} = $props();
 	let totalTime = Number(page.params.length);
 
 	const encouragingFeedback = [
@@ -126,6 +136,7 @@
 	function getNewTask() {
 		task = multiplicationTable.getRandomTask(multiplicationTables);
 		taskStartTime = Date.now();
+		revealedHints = 0;
 	}
 
 	async function checkAnswer(answer: number) {
@@ -148,6 +159,31 @@
 		});
 
 		if (answerIsCorrect) {
+			numberOfCorrectAnswers++;
+			getNewTask();
+		}
+	}
+
+	// Easy mode: score the task once the whole step-by-step wizard is completed
+	async function checkGuidedAnswer(correct: boolean, finished: boolean) {
+		if (!task) return;
+		answerIsCorrect = correct;
+		resultResponseText = correct ? randomMessage(correctMessages) : randomMessage(wrongMessages);
+		if (!correct) multiplicationTable.incrementIncorrect(task);
+
+		showResult = true;
+		await new Promise<void>((resolve) => {
+			setTimeout(() => {
+				showResult = false;
+				resultResponseText = '';
+				resolve();
+			}, 550);
+		});
+
+		if (finished) {
+			// Let the completion summary sink in before the next task appears
+			await new Promise((resolve) => setTimeout(resolve, 1100));
+			multiplicationTable.checkAnswer(task, task.question.answer, Date.now() - taskStartTime);
 			numberOfCorrectAnswers++;
 			getNewTask();
 		}
@@ -190,13 +226,13 @@
 				? 'invisible'
 				: ''} btn btn-primary z-10 w-full py-3 text-xl"
 			onclick={() => {
-				goto(`/${page.params.arithmeticOperation}`);
+				goto(restartUrl ?? `/${page.params.arithmeticOperation}`);
 			}}>En gang til!</button
 		>
 		<button
 			class="sr-only"
 			onclick={() => {
-				goto(`/${page.params.arithmeticOperation}`);
+				goto(restartUrl ?? `/${page.params.arithmeticOperation}`);
 			}}>En gang til!</button
 		>
 		<div class="pt-4 text-center text-sm text-slate-400" aria-hidden="true">
@@ -213,7 +249,7 @@
 				<Modal resultat={resultResponseText} {answerIsCorrect} />
 			</div>
 		{/if}
-		<div class="pb-8 text-center" translate="no" aria-live="assertive" role="presentation">
+		<div class="text-center" translate="no" aria-live="assertive" role="presentation">
 			<div class="sr-only fixed top-0">
 				{#if answerIsCorrect === true}
 					riktig
@@ -221,32 +257,57 @@
 					feil
 				{/if}
 			</div>
-			<div class="text-5xl font-extrabold tracking-wide sm:text-6xl">
-				{#if task}
+			{#if task && mode !== 'easy'}
+				<div class="pb-8 text-5xl font-extrabold tracking-wide sm:text-6xl">
 					{task.question.A}
 					<span class="text-slate-400">
-						{#if arithmeticOperation === 'multiplication'}
+						{#if arithmeticOperation === 'multiplication' || arithmeticOperation === 'big-multiplication'}
 							·
 						{:else if arithmeticOperation === 'division'}
 							:
 						{/if}
 					</span>
 					{task.question.B}
-				{/if}
-			</div>
-		</div>
-		<div class="flex justify-center gap-4 text-center text-xl" translate="no">
-			{#if task}
-				{#each task.alternatives as alternative, index (index)}
-					<AnswerButton
-						{alternative}
-						{task}
-						isCorrect={task.question.answer === alternative}
-						onselect={() => checkAnswer(alternative)}
-					/>
-				{/each}
+				</div>
 			{/if}
 		</div>
+		{#if task && mode === 'easy'}
+			<GuidedSteps {task} onanswer={checkGuidedAnswer} />
+		{:else}
+			<div class="flex justify-center gap-4 text-center text-xl" translate="no">
+				{#if task}
+					{#each task.alternatives as alternative, index (index)}
+						<AnswerButton
+							{alternative}
+							{task}
+							isCorrect={task.question.answer === alternative}
+							onselect={() => checkAnswer(alternative)}
+						/>
+					{/each}
+				{/if}
+			</div>
+			{#if task && mode === 'hard'}
+				{@const hintLines = bigMultiplicationHintLines(task.question.A, task.question.B)}
+				<div class="mt-8 flex flex-col items-center gap-3" translate="no">
+					{#if revealedHints > 0}
+						<div class="card flex flex-col gap-1 px-6 py-4 text-base font-semibold text-slate-500">
+							{#each hintLines.slice(0, revealedHints) as line, index (index)}
+								<div transition:fade={{ duration: 200 }}>
+									<span class="mr-2 font-extrabold text-violet-400">{index + 1}</span>{line}
+								</div>
+							{/each}
+						</div>
+					{/if}
+					{#if revealedHints < hintLines.length}
+						<button
+							class="rounded-full border-2 border-slate-200 bg-white/80 px-4 py-1.5 text-sm font-semibold text-slate-500 shadow-xs transition-colors hover:border-violet-300 hover:text-violet-600"
+							onclick={() => revealedHints++}
+							>💡 {revealedHints === 0 ? 'Vis hint' : 'Neste hint'}</button
+						>
+					{/if}
+				</div>
+			{/if}
+		{/if}
 		<div class="fixed top-4 left-1/2 -translate-x-1/2" aria-hidden="true">
 			<div class="flex items-center gap-2">
 				<div

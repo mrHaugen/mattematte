@@ -13,10 +13,112 @@ export interface Task {
 	alternatives: number[];
 }
 
+// A colored piece of a guided-step prompt: 'a' and 'b' match the highlighted
+// digits of the two numbers in the task, 'result' matches an earlier step's answer
+export type PromptPart = { text: string; color?: 'a' | 'b' | 'result' };
+
+export interface GuidedStep {
+	title: string;
+	prompt: string;
+	parts: PromptPart[];
+	highlightA: 'full' | 'last' | 'none';
+	highlightB: 'last' | 'none';
+	answer: number;
+	alternatives: number[];
+}
+
 interface Sensitivity {
 	thinkTime: number;
 	correctAnswers: number;
 	incorrectAnswers: number;
+}
+
+function shuffle(values: number[]): number[] {
+	for (let i = values.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[values[i], values[j]] = [values[j], values[i]];
+	}
+	return values;
+}
+
+// The "Add and Tack" steps for A × B where both numbers are between 11 and 19:
+// 1) A + last digit of B, 2) × 10, 3) multiply the last digits, 4) add them together
+export function generateGuidedSteps(A: number, B: number): GuidedStep[] {
+	const lastDigitA = A % 10;
+	const lastDigitB = B % 10;
+	const added = A + lastDigitB;
+	const tacked = added * 10;
+	const lastDigitProduct = lastDigitA * lastDigitB;
+	const sum = tacked + lastDigitProduct;
+
+	const direction = Math.random() < 0.5 ? 1 : -1;
+	const productDirection = lastDigitProduct <= 2 ? 1 : direction;
+
+	return [
+		{
+			title: 'Legg til det siste sifferet',
+			prompt: `${A} + ${lastDigitB}`,
+			parts: [{ text: `${A}`, color: 'a' }, { text: ' + ' }, { text: `${lastDigitB}`, color: 'b' }],
+			highlightA: 'full',
+			highlightB: 'last',
+			answer: added,
+			alternatives: shuffle([added, added + direction, added + 2 * direction])
+		},
+		{
+			title: 'Gang med 10',
+			prompt: `${added} × 10`,
+			parts: [{ text: `${added}`, color: 'result' }, { text: ' × 10' }],
+			highlightA: 'none',
+			highlightB: 'none',
+			answer: tacked,
+			alternatives: shuffle([tacked, added * 100, added + 10])
+		},
+		{
+			title: 'Gang de siste sifrene',
+			prompt: `${lastDigitA} × ${lastDigitB}`,
+			parts: [
+				{ text: `${lastDigitA}`, color: 'a' },
+				{ text: ' × ' },
+				{ text: `${lastDigitB}`, color: 'b' }
+			],
+			highlightA: 'last',
+			highlightB: 'last',
+			answer: lastDigitProduct,
+			alternatives: shuffle([
+				lastDigitProduct,
+				lastDigitProduct + productDirection,
+				lastDigitProduct + 2 * productDirection
+			])
+		},
+		{
+			title: 'Legg sammen',
+			prompt: `${tacked} + ${lastDigitProduct}`,
+			parts: [
+				{ text: `${tacked}`, color: 'result' },
+				{ text: ' + ' },
+				{ text: `${lastDigitProduct}`, color: 'result' }
+			],
+			highlightA: 'none',
+			highlightB: 'none',
+			answer: sum,
+			alternatives: shuffle([sum, sum + 10, sum - 10])
+		}
+	];
+}
+
+// The same steps as text lines, used as a hint in hard mode
+export function bigMultiplicationHintLines(A: number, B: number): string[] {
+	const lastDigitA = A % 10;
+	const lastDigitB = B % 10;
+	const added = A + lastDigitB;
+	const tacked = added * 10;
+	const lastDigitProduct = lastDigitA * lastDigitB;
+	return [
+		`${A} + ${lastDigitB} = ${added}`,
+		`${added} × 10 = ${tacked}`,
+		`${lastDigitA} × ${lastDigitB} = ${lastDigitProduct}`,
+		`${tacked} + ${lastDigitProduct} = ?`
+	];
 }
 
 class Questions {
@@ -79,8 +181,24 @@ class Questions {
 					}
 				}
 			}
+		} else if (operation === 'big-multiplication') {
+			for (let i = 11; i <= 19; i++) {
+				for (let j = 11; j <= 19; j++) {
+					table.push({
+						table: i,
+						A: i,
+						B: j,
+						answer: i * j,
+						thinkTime: 3500,
+						correct: 0,
+						incorrect: 0
+					});
+				}
+			}
 		} else {
-			console.error('Invalid operation type. Use "multiplication" or "division".');
+			console.error(
+				'Invalid operation type. Use "multiplication", "division" or "big-multiplication".'
+			);
 		}
 		return table;
 	}
@@ -176,17 +294,18 @@ class Questions {
 				alternatives.push(correctAnswer + addOrSubtract);
 				alternatives.push(correctAnswer + 2 * addOrSubtract);
 				break;
+			case 'big-multiplication': {
+				// Every alternative must end in the same digit as the correct answer —
+				// otherwise multiplying the last digits of the task gives the answer away
+				const offsets = shuffle([-20, -10, 10, 20]).slice(0, 2);
+				alternatives.push(correctAnswer, correctAnswer + offsets[0], correctAnswer + offsets[1]);
+				break;
+			}
 			default:
 				break;
 		}
 
-		// Shuffle the alternatives array
-		for (let i = alternatives.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[alternatives[i], alternatives[j]] = [alternatives[j], alternatives[i]];
-		}
-
-		return alternatives;
+		return shuffle(alternatives);
 	}
 
 	getRandomTask(selectedTables: number[]): Task {

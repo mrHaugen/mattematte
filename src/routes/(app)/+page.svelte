@@ -1,18 +1,28 @@
 <script lang="ts">
 	const arithmeticOperations = [
 		{
-			name: 'multiplikasjon',
+			name: 'Multiplikasjon',
+			sub: undefined,
 			link: 'multiplication',
 			symbol: '×',
 			badge: 'bg-amber-100 text-amber-600',
 			hover: 'hover:border-amber-300 hover:bg-amber-50'
 		},
 		{
-			name: 'divisjon',
+			name: 'Divisjon',
+			sub: undefined,
 			link: 'division',
 			symbol: '÷',
 			badge: 'bg-sky-100 text-sky-600',
 			hover: 'hover:border-sky-300 hover:bg-sky-50'
+		},
+		{
+			name: 'Den store multiplikasjonstabellen',
+			sub: 'Multiplikasjon med 11 til 19',
+			link: 'big-multiplication',
+			symbol: '×',
+			badge: 'bg-violet-100 text-violet-600',
+			hover: 'hover:border-violet-300 hover:bg-violet-50'
 		}
 	];
 </script>
@@ -43,7 +53,12 @@
 					class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-3xl font-extrabold {operation.badge}"
 					aria-hidden="true">{operation.symbol}</span
 				>
-				<span class="flex-1 text-lg font-bold capitalize">{operation.name}</span>
+				<span class="flex-1">
+					<span class="block text-lg font-bold">{operation.name}</span>
+					{#if operation.sub}
+						<span class="block text-xs font-semibold text-slate-400">{operation.sub}</span>
+					{/if}
+				</span>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="20"
